@@ -1,0 +1,9 @@
+cpu 1
+private secure
+private-dev
+private-tmp
+blacklist /var*
+blacklist /etc/ssh*
+blacklist /etc/shadow
+seccomp
+net none
