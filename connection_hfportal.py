@@ -4,13 +4,13 @@ import urllib
 from urllib2 import urlopen, Request
 
 def get_new_submissions(hw_id):    
-    response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_list=%d' % hw_id)
+    response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_list=%d' % int(hw_id))
     data = response.read()
     return json.loads(data)
 
 
 def get_submission_file(id):    
-    response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_file=%d' % id)
+    response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_file=%d' % int(id))
     data = response.read()
     return data
 
@@ -35,6 +35,6 @@ def post_result(id, sender, state, result, comment):
         'comment' : comment
     }
     data = urllib.urlencode(values)
-    response = urlopen('https://hf.mit.bme.hu/api.php?set_result=%d' % id, data)
+    response = urlopen('https://hf.mit.bme.hu/api.php?set_result=%d' % int(id), data)
     databack = response.read()
     return databack

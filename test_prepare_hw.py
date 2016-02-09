@@ -9,6 +9,7 @@ data = get_submission_file(subms[0])
 #unzip(data, "secure")
 
 #print(java_compile("secure/*.java"))
+
 print(java_compile_all("secure"))
 
 print(run_firejail_java("test","lorem ipsum","secure_firejail_profile"))

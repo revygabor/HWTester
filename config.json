@@ -1,0 +1,16 @@
+{  
+   "workingDir":"secure",
+   "appName":"HWTester",
+   "messageMaxLength":100,
+   "homeworkData":{  
+      "47":{  
+         "firejail profile":"secure_firejail_profile",
+         "classname":"test",
+         "fullscore":25,
+         "testcases":{  
+            "aaaa":"aaaa",
+            "asdasdasdbbbb":"asdasdasdbbbb"
+         }
+      }
+   }
+}
