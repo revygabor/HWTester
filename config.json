@@ -7,7 +7,7 @@
          "firejail profile":"secure_firejail_profile",
          "classname":"test",
          "fullscore":25,
-         "timeout":2000,
+         "timeout":2,
          "testcases":{  
             "aaaa":"aaaa",
             "asdasdasdbbbb":"asdasdasdbbbb"

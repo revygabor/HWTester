@@ -37,7 +37,7 @@ for hw_id, hw_details in hw_data.iteritems():
             break
 
         for input,target_output in hw_details['testcases'].iteritems():
-            (stdout, stderr) = run_firejail_java(hw_details['classname'],input,hw_details['firejail profile'])
+            (stdout, stderr) = run_firejail_java(hw_details['classname'],input,hw_details['firejail profile'], timeout = hw_details['timeout'])
             stdout = stdout.strip()
             target_output = target_output.strip()
             if stdout != target_output or stderr:                
