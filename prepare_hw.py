@@ -8,7 +8,8 @@ import time
 import signal
 
 def clean_dir(target_dir):
-    shutil.rmtree(target_dir)
+    if os.path.exists(target_dir):
+        shutil.rmtree(target_dir)
 
 def unzip(data, target_dir, filename=None):
     submission_zipfile = ZipFile(StringIO(data))
@@ -21,12 +22,23 @@ def unzip(data, target_dir, filename=None):
         submission_zipfile.extractall(target_dir)
         
 def java_compile(filenames):
-    sp = subprocess.Popen(["javac"].extend(filenames), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    sp = subprocess.Popen(["javac","-encoding","UTF8"].extend(filenames), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return sp.communicate()
 
-def java_compile_all(directory):        
-    sp = subprocess.Popen("find %s -name \*.java -print0 | xargs -0 javac" % directory, shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def java_compile_all(src_dir, bin_dir):    
+    if not os.path.exists(bin_dir):
+        os.makedirs(bin_dir)
+    sp = subprocess.Popen("find %s -name \*.java -print0 | xargs -0 javac -encoding ISO8859_1 -d %s"% (src_dir, bin_dir), shell=True, executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return sp.communicate()
+
+def find_java_class_with_package(name, path):        
+    fullname = name + ".class"
+    for root, dirs, files in os.walk(path):        
+        if fullname in files:
+            tmp = root.split(os.sep)[1:]
+            tmp.append(name)
+            return ".".join(tmp)
+    return None
 
 def run_firejail(command_with_arguments, input, firejail_profile_file=None, timeout = 5.0):
     params = ["firejail", "--quiet"]
@@ -48,6 +60,7 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
     stdoutList = []
     stderrList = []
+    extraerrList = []
     totalOutput = 0
 
     while totalOutput < 4096 * 1024 and sp.poll() is None and time.clock() - starttime < timeout:
@@ -66,16 +79,16 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
     if sp.poll() is None:
         if totalOutput >= 4096 * 1024:
-            stderrList.append("Too much output data received, killing process!")
+            extraerrList.append("Too much output data received, killing process!")
         if time.clock() - starttime >= timeout:
-            stderrList.append("Maximum allowed time exceeded, killing process!")
+            extraerrList.append("Maximum allowed time exceeded, killing process!")
         os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
         #sp.kill()
 
     #sp.communicate(input=input)
-    return ("".join(stdoutList), "".join(stderrList))
+    return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))
 
-def run_firejail_java(classname, input, firejail_profile_file=None):    
-    return run_firejail("java -Djava.security.manager -cp . %s" % classname, input, firejail_profile_file)
+def run_firejail_java(classname, input, firejail_profile_file=None, classpath = ".", timeout = 5.0):
+    return run_firejail("java -Djava.security.manager -cp %s %s" % (classpath, classname), input, firejail_profile_file, timeout = timeout)
 
 
