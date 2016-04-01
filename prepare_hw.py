@@ -79,9 +79,9 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
     if sp.poll() is None:
         if totalOutput >= 4096 * 1024:
-            extraerrList.append("Too much output data received, killing process!")
+            extraerrList.append("Too much output data received, killing process!\n")
         if time.clock() - starttime >= timeout:
-            extraerrList.append("Maximum allowed time exceeded, killing process!")
+            extraerrList.append("Maximum allowed time exceeded, killing process!\n")
         os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
         #sp.kill()
 

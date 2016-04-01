@@ -13,8 +13,7 @@ with open('config.json') as config_file:
     EXTRACT_DIR = config['extractDirPrefix']    
     CORRECTOR_NAME = config['appName']
     MESSAGE_MAX_LENGTH = config['messageMaxLength']
-    break_on_first_error = config['breakOnFirstError']
-    break_on_first_timeout = config['breakOnFirstTimeout']
+    break_on_first_error = config['breakOnFirstError']    
     log_to_html = config['logToHTML']
     enable_write_to_database = config['enableWriteToDatabase']
 
@@ -25,45 +24,97 @@ def truncate(s):
     else:
         return s
 
-def bad_output_message(output, input):
-    return "Bad output '%s' for input '%s'." % (truncate(output), input)
-
 def log_output(log, input, target_output, output, stderr):
+    if "result" not in log:
+        log["result"] = []    
     if "good" not in log:
         log["good"] = 0
     if "bad" not in log:
-        log["bad"] = []
-    if stdout != target_output or stderr: 
-        log["bad"].append([input, target_output, output, stderr])
+        log["bad"] = []   
+    log["result"].append({'input':input,'target_output':target_output,'output':output, 'error':stderr})
+    index = len(log["result"])-1
+    
+    stdout_lines = stdout.split("\n")
+    target_output_lines = target_output.split("\n")    
+    if "partbad" not in log:
+        log["partbad"] = []
+        for i in range(len(target_output_lines)):
+            log["partbad"].append([])
+
+    if stdout != target_output or stderr:
+        for i in range(len(target_output_lines)):
+            if len(stdout_lines) <= i or stdout_lines[i] != target_output_lines[i]:                
+                log["partbad"][i].append(index)        
+        log["bad"].append(index)
     else:
         log["good"] += 1
 
+def response_message_from_log(log):
+    if not log["bad"]:
+        return "Passed all tests."
+    errtext = []   
+    lasterrindex = -1     
+    for errlineindex in range(len(log["partbad"])):
+        if not log["partbad"][errlineindex]:
+            continue
+        errindex = log["partbad"][errlineindex][0]
+        if lasterrindex == errindex:
+            continue
+        err = log['result'][errindex]
+        errtext.append("Wrong answer in line %d of output: \n%s\n\nfor input #%d: \n%s\n" % (errlineindex+1, truncate(err['output']), errindex, err['input']))
+        lasterrindex = errindex
+        
+    return "".join(errtext)
+
+def score_from_log(log, scorelimits):    
+    print(log['partbad'])
+    score = 0
+    for i in range(len(log['partbad'])):
+        score += sum([ratio <= float(len(log['result'])-len(log['partbad'][i])) / len(log['result']) for ratio in scorelimits[i]])    
+    return score
+
+def check_log_for_errors(log):
+    for res in log["result"]:
+        if res['error']:
+            return (res['error'], res['input'])
+    return (None, None)
+
+    
+
 def log2html(log):
-    with open("log_%s.html"%log["id"],"w") as file:
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+    with open("logs/log_%s.html"%log["id"],"w") as file:
         file.write("<b>ID:</b> %d <br>" % (log["id"]))
 
         if "compile_error" in log:
             file.write("<b>COMPILE ERROR:</b> %s <br>" % (log["compile_error"]))            
         else:   
             file.write("<b>MAIN CLASS:</b> %s <br>" % (log["classname"]))
-            file.write("<b>GOOD RATIO:</b> %d/%d <br>" % (log["good"], log["good"] + len(log["bad"])))
+            file.write("<b>GOOD RATIO:</b> %d/%d <br>" % (log["good"], len(log["result"])))
             file.write("<b>TEST DURATIOn:</b> %f s<br>" % (log["endtime"] - log["starttime"]))
             
             file.write('<table border="1">')
             file.write("<tr>")
             file.write("<th>INPUT</th><th>TARGET_OUTPUT</th><th>OUTPUT</th><th>ERROR</th>")
             file.write("</tr>")
-            for row in log["bad"]:
-                file.write("<tr>")
-                for item in row:
-                    file.write("<td>")
-                    file.write(item.replace("\n","<br>"))
-                    file.write("</td>")
+            for badindex in log["bad"]:
+                row = log['result'][badindex]
+                file.write("<tr>")                
+                file.write("<td>")
+                file.write(row['input'].replace("\n","<br>"))
+                file.write("</td>")
+                file.write("<td>")
+                file.write(row['target_output'].replace("\n","<br>"))
+                file.write("</td>")
+                file.write("<td>")
+                file.write(row['output'].replace("\n","<br>"))
+                file.write("</td>")
+                file.write("<td>")
+                file.write(row['error'].replace("\n","<br>"))
+                file.write("</td>")
                 file.write("</tr>")
             file.write("</table>")
-
-
-
 
 for hw_id, hw_details in hw_data.iteritems():
     if isinstance(hw_details['testcases'], basestring):
@@ -72,6 +123,7 @@ for hw_id, hw_details in hw_data.iteritems():
 
     for submission_id in get_new_submissions(hw_id):
         print("Testing submission: %d" % submission_id)
+
         log = {}
         log["id"] = submission_id
 
@@ -92,11 +144,14 @@ for hw_id, hw_details in hw_data.iteritems():
 
         if "compile_error" not in log:
             target = find_java_class_with_package(hw_details['classname'], WORKING_DIR)       
-            log["classname"] = target
+            log["classname"] = target            
 
             testcntr = 0
             log["starttime"] = time.clock()
-            for input,target_output in hw_details['testcases'].iteritems():            
+            for data in hw_details['testcases']:            
+                input = data[0]
+                target_output = data[1]
+
                 testcntr += 1
                 if (testcntr > hw_details["max testcount"]):
                     break
@@ -104,23 +159,20 @@ for hw_id, hw_details in hw_data.iteritems():
                 stdout = stdout.strip()
                 target_output = target_output.strip()
 
-                log_output(log, input, target_output, stdout, stderr or extraerr)
-
-                if break_on_first_error and (stdout != target_output or stderr or extraerr):                
-                    break            
-                                
-                if break_on_first_timeout and extraerr:
-                    break    
+                log_output(log, input, target_output, stdout, stderr or extraerr)               
+                
+                if break_on_first_error and (stderr or extraerr):                
+                    break                                            
                 
             log["endtime"] = time.clock()
 
             if enable_write_to_database:
-                if stderr or extraerr:
-                    post_result(submission_id, CORRECTOR_NAME, 9, 0, truncate(stderr))
-                elif stdout != target_output:
-                    post_result(submission_id, CORRECTOR_NAME, 7, 0, bad_output_message(stdout, input))
+                (err, errinp) = check_log_for_errors(log)
+                if err and errinp:
+                    errtext = "Runtime error occured \n%s\nfor input: \n%s" % (truncate(err), errinp)
+                    post_result(submission_id, CORRECTOR_NAME, 9, 0, errtext)
                 else:
-                    post_result(submission_id, CORRECTOR_NAME, 7, hw_details['fullscore'], "Passed all tests.")
+                    post_result(submission_id, CORRECTOR_NAME, 7, score_from_log(log, hw_details['scorelimits']), response_message_from_log(log))
         else:
             if enable_write_to_database:
                 post_result(submission_id, CORRECTOR_NAME, 9, 0, truncate(log["compile_error"]))            

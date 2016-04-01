@@ -3,18 +3,17 @@
    "extractDirPrefix":"src",
    "appName":"HWTester",
    "messageMaxLength":256,
-   "breakOnFirstError":false,
-   "breakOnFirstTimeout":true,
+   "breakOnFirstError":true,
    "logToHTML":true,
-   "enableWriteToDatabase":false,
+   "enableWriteToDatabase":true,
    "homeworkData":{  
       "176":{  
          "firejail profile":"secure_firejail_profile",
          "classname":"Main",
-         "fullscore":3,
+         "scorelimits":[[0.5,1.0],[1.0]],
          "timeout":3,
          "testcases":"iodata.json",
-         "max testcount":100
+         "max testcount":10
       }
    }
 }
