@@ -114,7 +114,7 @@ while True:
         break_on_first_error = config['breakOnFirstError']    
         log_to_html = config['logToHTML']
         enable_write_to_database = config['enableWriteToDatabase']
-        is 'stop' in config:
+        if 'stop' in config:
             break
 
 
