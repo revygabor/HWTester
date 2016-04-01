@@ -66,8 +66,7 @@ def response_message_from_log(log):
         
     return "".join(errtext)
 
-def score_from_log(log, scorelimits):    
-    print(log['partbad'])
+def score_from_log(log, scorelimits):        
     score = 0
     for i in range(len(log['partbad'])):
         score += sum([ratio <= float(len(log['result'])-len(log['partbad'][i])) / len(log['result']) for ratio in scorelimits[i]])    
