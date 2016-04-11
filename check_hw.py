@@ -2,7 +2,7 @@ import json
 import shutil
 import os
 import time
-from connection_hfportal import get_new_submissions, get_submission_file, post_result
+from connection_hfportal import get_submissions, get_submission_file, post_result
 from prepare_hw import unzip, java_compile, run_firejail_java, java_compile_all, clean_dir, find_java_class_with_package
 
 def truncate(s):
@@ -67,11 +67,13 @@ def check_log_for_errors(log):
 
     
 
-def log2html(log):
-    if not os.path.exists("logs"):
-        os.makedirs("logs")
-    with open("logs/log_%s.html"%log["id"],"w") as file:
+def log2html(log, log_dir):
+    path = os.path.join(log_dir, log["neptun"])
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open(os.path.join(path, "log_%s.html"%log["id"]),"w") as file:
         file.write("<b>ID:</b> %d <br>" % (log["id"]))
+        file.write("<b>NEPTUN:</b> %s <br>" % (log["neptun"]))
 
         if "compile_error" in log:
             file.write("<b>COMPILE ERROR:</b> %s <br>" % (log["compile_error"]))            
@@ -104,11 +106,13 @@ def log2html(log):
 
 
 while True:
+    print("Reading config file")
     with open('config.json') as config_file:  
         config = json.load(config_file)
         hw_data = config['homeworkData']
         WORKING_DIR = config['workingDir']
-        EXTRACT_DIR = config['extractDirPrefix']    
+        EXTRACT_DIR = config['extractDir']    
+        LOG_DIR = config['logDir']    
         CORRECTOR_NAME = config['appName']
         MESSAGE_MAX_LENGTH = config['messageMaxLength']
         break_on_first_error = config['breakOnFirstError']    
@@ -117,21 +121,24 @@ while True:
         if 'stop' in config:
             break
 
-
+    print("Checking jobs")
     for hw_id, hw_details in hw_data.iteritems():
         if isinstance(hw_details['testcases'], basestring):
             with open(hw_details['testcases'],"r") as data_file:        
                 hw_details['testcases'] = json.load(data_file)
 
-        for submission_id in get_new_submissions(hw_id):
-            print("Testing submission: %d" % submission_id)
+        for submission_data in get_submissions(hw_id):
+            submission_id = submission_data[0]
+            submission_neptun = submission_data[1]
+            print("Testing submission: %s (%d)" % (submission_neptun,submission_id))
 
             log = {}
             log["id"] = submission_id
+            log["neptun"] = submission_neptun
 
             data = get_submission_file(submission_id)
             
-            src_dir = EXTRACT_DIR + str(submission_id)
+            src_dir = os.path.join(EXTRACT_DIR, submission_neptun, str(submission_id))
 
             clean_dir(src_dir)
             clean_dir(WORKING_DIR)
@@ -142,7 +149,7 @@ while True:
                 if stderr:
                     log["compile_error"] = stderr   
             except Exception as e:
-                log["compile_error"] = e                            
+                log["compile_error"] = str(e)
 
             if "compile_error" not in log:
                 target = find_java_class_with_package(hw_details['classname'], WORKING_DIR)       
@@ -179,5 +186,6 @@ while True:
                 if enable_write_to_database:
                     post_result(submission_id, CORRECTOR_NAME, 9, 0, truncate(log["compile_error"]))            
             if log_to_html:
-                log2html(log)    
+                log2html(log, LOG_DIR)
+    print("Sleeping")
     time.sleep(60)
