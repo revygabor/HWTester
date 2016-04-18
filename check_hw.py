@@ -24,13 +24,14 @@ def log_output(log, input, target_output, output, stderr):
     stdout_lines = stdout.split("\n")
     target_output_lines = target_output.split("\n")    
     if "partbad" not in log:
-        log["partbad"] = []
-        for i in range(len(target_output_lines)):
-            log["partbad"].append([])
+        log["partbad"] = []                
+
+    while len(log["partbad"]) < len(target_output_lines):
+        log["partbad"].append([])
 
     if stdout != target_output or stderr:
         for i in range(len(target_output_lines)):
-            if len(stdout_lines) <= i or stdout_lines[i] != target_output_lines[i]:                
+            if len(stdout_lines) <= i or stdout_lines[i] != target_output_lines[i]:                                
                 log["partbad"][i].append(index)        
         log["bad"].append(index)
     else:
@@ -54,9 +55,22 @@ def response_message_from_log(log):
     return "".join(errtext)
 
 def score_from_log(log, scorelimits):        
-    score = 0
-    for i in range(len(log['partbad'])):
-        score += sum([ratio <= float(len(log['result'])-len(log['partbad'][i])) / len(log['result']) for ratio in scorelimits[i]])    
+    if "compile_error" in log:
+        return 0
+    for i in log["bad"]:
+        if log["result"][i]["error"]:
+            return 0
+
+    score = 0    
+    if isinstance(scorelimits, list):        
+        if isinstance(scorelimits[0], list):        
+            for i in range(len(log['partbad'])):
+                score += sum([ratio <= float(len(log['result'])-len(log['partbad'][i])) / len(log['result']) for ratio in scorelimits[i]])    
+        else:
+            score = sum([ratio <= float(len(log['result'])-len(log['bad'])) / len(log['result']) for ratio in scorelimits])
+    else:
+        if len(log['bad']) == 0:
+            score = scorelimits
     return score
 
 def check_log_for_errors(log):
@@ -67,7 +81,7 @@ def check_log_for_errors(log):
 
     
 
-def log2html(log, log_dir):
+def log2html(log, log_dir,scorelimits):
     path = os.path.join(log_dir, log["neptun"])
     if not os.path.exists(path):
         os.makedirs(path)
@@ -80,6 +94,7 @@ def log2html(log, log_dir):
         else:   
             file.write("<b>MAIN CLASS:</b> %s <br>" % (log["classname"]))
             file.write("<b>GOOD RATIO:</b> %d/%d <br>" % (log["good"], len(log["result"])))
+            file.write("<b>SCORE:</b> %d <br>" % (score_from_log(log,scorelimits)))
             file.write("<b>TEST DURATIOn:</b> %f s<br>" % (log["endtime"] - log["starttime"]))
             
             file.write('<table border="1">')
@@ -186,6 +201,6 @@ while True:
                 if enable_write_to_database:
                     post_result(submission_id, CORRECTOR_NAME, 9, 0, truncate(log["compile_error"]))            
             if log_to_html:
-                log2html(log, LOG_DIR)
+                log2html(log, LOG_DIR,hw_details['scorelimits'])
     print("Sleeping")
     time.sleep(60)
