@@ -37,20 +37,26 @@ def log_output(log, input, target_output, output, stderr):
     else:
         log["good"] += 1
 
-def response_message_from_log(log):
+def response_message_from_log(log, scorelimits):
     if not log["bad"]:
         return "Passed all tests."
     errtext = []   
     lasterrindex = -1     
-    for errlineindex in range(len(log["partbad"])):
-        if not log["partbad"][errlineindex]:
-            continue
-        errindex = log["partbad"][errlineindex][0]
-        if lasterrindex == errindex:
-            continue
+    if isinstance(scorelimits, list) and isinstance(scorelimits[0], list):               
+        for errlineindex in range(len(log["partbad"])):
+            if not log["partbad"][errlineindex]:
+                continue
+            errindex = log["partbad"][errlineindex][0]
+            if lasterrindex == errindex:
+                continue
+            err = log['result'][errindex]
+            errtext.append("Wrong answer in line %d of output: \n%s\n\nfor input #%d: \n%s\n" % (errlineindex+1, truncate(err['output']), errindex, err['input']))
+            lasterrindex = errindex
+    else:
+        errindex = log["bad"][0]
         err = log['result'][errindex]
-        errtext.append("Wrong answer in line %d of output: \n%s\n\nfor input #%d: \n%s\n" % (errlineindex+1, truncate(err['output']), errindex, err['input']))
-        lasterrindex = errindex
+        errtext.append("Wrong answer in output: \n%s\n\nfor input #%d: \n%s\n" % (truncate(err['output']), errindex, err['input']))
+
         
     return "".join(errtext)
 
@@ -67,7 +73,8 @@ def score_from_log(log, scorelimits):
             for i in range(len(log['partbad'])):
                 score += sum([ratio <= float(len(log['result'])-len(log['partbad'][i])) / len(log['result']) for ratio in scorelimits[i]])    
         else:
-            score = sum([ratio <= float(len(log['result'])-len(log['bad'])) / len(log['result']) for ratio in scorelimits])
+            goodratio = float(len(log['result'])-len(log['bad'])) / len(log['result'])            
+            score = sum([ratio <= goodratio for ratio in scorelimits])
     else:
         if len(log['bad']) == 0:
             score = scorelimits
@@ -196,7 +203,7 @@ while True:
                         errtext = "Runtime error occured \n%s\nfor input: \n%s" % (truncate(err), errinp)
                         post_result(submission_id, CORRECTOR_NAME, 9, 0, errtext)
                     else:
-                        post_result(submission_id, CORRECTOR_NAME, 7, score_from_log(log, hw_details['scorelimits']), response_message_from_log(log))
+                        post_result(submission_id, CORRECTOR_NAME, 7, score_from_log(log, hw_details['scorelimits']), response_message_from_log(log, hw_details['scorelimits']))
             else:
                 if enable_write_to_database:
                     post_result(submission_id, CORRECTOR_NAME, 9, 0, truncate(log["compile_error"]))            
