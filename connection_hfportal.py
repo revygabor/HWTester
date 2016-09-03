@@ -3,19 +3,23 @@ import json
 import urllib
 from urllib2 import urlopen, Request
 
+def get_host():
+    #return "hf.mit.bme.hu"
+    return "localhost:12345"
+
 def get_submissions(hw_id, state = 0):    
     try:
         if state:
-            response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_list=%d&status=%d' % (int(hw_id), int(state)))
+            response = urlopen('https://%s/api.php?get_submission_list=%d&status=%d' % (get_host(), int(hw_id), int(state)))
         else:	
-            response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_list=%d' % int(hw_id))
+            response = urlopen('https://%s/api.php?get_submission_list=%d' % (get_host(), int(hw_id)))
         data = response.read()    
         return json.loads(data)
     except Exception as e:
         return []
 
 def get_submission_file(id):    
-    response = urlopen('https://hf.mit.bme.hu/api.php?get_submission_file=%d' % int(id))
+    response = urlopen('https://%s/api.php?get_submission_file=%d' % (get_host(), int(id)))
     data = response.read()
     return data
 
@@ -40,6 +44,6 @@ def post_result(id, sender, state, result, comment):
         'comment' : comment
     }
     data = urllib.urlencode(values)
-    response = urlopen('https://hf.mit.bme.hu/api.php?set_result=%d' % int(id), data)
+    response = urlopen('https://%s/api.php?set_result=%d' % (get_host(), int(id)), data)
     databack = response.read()
     return databack

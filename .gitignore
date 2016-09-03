@@ -3,6 +3,8 @@ secure/
 log/
 log.txt
 
+.idea/*
+
 *.json
 
 # Byte-compiled / optimized / DLL files
