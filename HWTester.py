@@ -3,7 +3,6 @@ import os
 import time
 from connection_hfportal import get_submissions, get_submission_file, post_result
 import Utility
-import importlib
 import Log
 
 if __name__ == "__main__":
@@ -46,16 +45,12 @@ if __name__ == "__main__":
                     log.log_error("compile error", str(e))
 
                 if not log.has_error("compile error"):
-                    scorecalculatormod = importlib.import_module(hw_details.get("score calculator"))
-                    scorecalculatorclass = getattr(scorecalculatormod, hw_details.get("score calculator"))
-                    scorecalculator = scorecalculatorclass(hw_details.get("score calculator details"))
+                    scorecalculator = Utility.get_class(hw_details.get("score calculator"))(hw_details.get("score calculator details"))
 
                     log.log_start_time()
                     for project_name, project_details in hw_details.get("runnables").iteritems():
                         for solution_type in project_details.get("allowed solution"):
-                            solutionmod = importlib.import_module(solution_type)
-                            solutionclass = getattr(solutionmod, solution_type)
-                            solution = solutionclass(src_dir, WORKING_DIR, hw_details.get('firejail profile'))
+                            solution = Utility.get_class(solution_type)(src_dir, WORKING_DIR, hw_details.get('firejail profile'))
 
 
                             (stdout, stderr) = solution.prepare()
@@ -64,10 +59,7 @@ if __name__ == "__main__":
                             else:
                                 break
 
-
-                        testermod = importlib.import_module(project_details.get("tester"))
-                        testerclass = getattr(testermod, project_details.get("tester"))
-                        tester = testerclass(project_details.get("tester details"))
+                        tester = Utility.get_class(project_details.get("tester"))(project_details.get("tester details"))
 
                         runnable = solution.find_runnable(project_name)
                         tester.test(runnable, project_name, solution, log)

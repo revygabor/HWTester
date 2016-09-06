@@ -6,6 +6,7 @@ import shutil
 import fcntl
 import time
 import signal
+import imp
 
 def clean_dir(target_dir):
     if os.path.exists(target_dir):
@@ -68,3 +69,11 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))
+
+def get_class(classpath):
+    if not classpath.endswith(".py"):
+        classpath = classpath + ".py"
+    modname = os.path.basename(classpath).replace(".py", "")
+    mod = evaluatormod = imp.load_source(modname, classpath)
+    clazz = getattr(mod, modname)
+    return clazz

@@ -4,8 +4,8 @@ import urllib
 from urllib2 import urlopen, Request
 
 def get_host():
-    #return "hf.mit.bme.hu"
-    return "localhost:12345"
+    return "hf.mit.bme.hu"
+    #return "localhost:12345"
 
 def get_submissions(hw_id, state = 0):    
     try:
