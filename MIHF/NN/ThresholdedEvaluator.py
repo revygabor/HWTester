@@ -12,7 +12,7 @@ class ThresholdedEvaluator(Evaluator.Evaluator):
         target_output_lines = target_output.split("\n")
 
         dict = {}
-        treshold = self.details["threshold"]
+        treshold = float(self.details["threshold"])
         for i in range(len(target_output_lines)):
             if len(output_lines) <= i:
                 return (0, "Missing line %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
@@ -21,9 +21,13 @@ class ThresholdedEvaluator(Evaluator.Evaluator):
             if len(values) != len(target_values):
                 return (0, "Error in line %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
             for j in range(len(values)):
-                if float(values[j]) != float(target_values[j]):
-                    return (0, "Error in line %d at value %d in output: \n%s\n\nfor input: \n%s\n" % (
-                    i + 1, j + 1, log.truncate(output), input))
+                try:
+                    if float(values[j]) > float(target_values[j]) * (1 + treshold) or float(values[j]) < float(target_values[j]) * (1 - treshold):
+                        return (0, "Error in line %d at value %d in output: \n%s\n\nfor input: \n%s\n" % (
+                        i + 1, j + 1, log.truncate(output), input))
+                except:
+                    return (
+                    0, "Error in line %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
 
 
 
