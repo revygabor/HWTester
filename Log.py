@@ -41,8 +41,12 @@ class Log(object):
         self.data["end"] = time.clock()
 
     def message(self):
-        #TODO
-        pass
+        if "compile error" in self.data["errors"]:
+            return "COMPILE ERROR: %s \n" % (self.truncate(self.data["errors"]["compile error"]))
+        else:
+            for k, v in self.data["errors"].iteritems():
+                return "ERROR: %s \n" % (self.truncate(v))
+        return ""
 
     def log2html(self, log_dir, score_calculator):
         path = os.path.join(log_dir, self.data["hw_name"], self.data["neptun"])
@@ -62,7 +66,7 @@ class Log(object):
 
 
                 for classname, resultdata in self.data["results"].iteritems():
-                    file.write("<b>MAIN CLASS:</b> %s <br>\n" % (classname))
+                    file.write("<br><br><b>MAIN CLASS:</b> %s <br>\n" % (classname))
                     file.write('<table border="1">\n')
                     file.write("<tr>\n")
                     file.write("<th>INPUT</th><th>TARGET_OUTPUT</th><th>OUTPUT</th><th>RESULT</th><th>MESSAGE</th>\n")
@@ -86,4 +90,7 @@ class Log(object):
                         file.write("</td>\n")
                         file.write("</tr>\n")
                     file.write("</table>")
+            if score_calculator:
+                file.write("<br><br><b>SCORE TO HF PORTAL:</b> %s <br>\n" % (str(score_calculator.score())))
+                file.write("<b>MESSAGE TO HF PORTAL:</b><br>\n%s <br>\n" % (score_calculator.message()))
         pass

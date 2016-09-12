@@ -31,6 +31,9 @@ class StdIOTester(Tester.Tester):
                 input = data[0]
                 target_output = data[1]
 
+            if not runnable:
+                log.log_test(project_name, "", "", "", 0, "Cannot find class %s with main() function." % project_name)
+                break
 
             (stdout, stderr, extraerr) = solution.run(runnable, input, timeout = timeout)
 

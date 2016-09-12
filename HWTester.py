@@ -44,6 +44,7 @@ if __name__ == "__main__":
                 except Exception as e:
                     log.log_error("compile error", str(e))
 
+                scorecalculator = None
                 if not log.has_error("compile error"):
                     scorecalculator = Utility.get_class(hw_details.get("score calculator"))(hw_details.get("score calculator details"))
 
@@ -65,22 +66,18 @@ if __name__ == "__main__":
                         tester.test(runnable, project_name, solution, log)
                     log.log_finish_time()
 
+                    scorecalculator.set_log(log)
 
-                    if enable_write_to_database:
 
-                        if log.has_error():
-                            post_result(submission_id, CORRECTOR_NAME, 9, 0, log.message())
-                        else:
-                            post_result(submission_id, CORRECTOR_NAME, 7,
-                                        scorecalculator.score(log),
-                                        log.message())
-                    if log_to_html:
-                        log.log2html(LOG_DIR, scorecalculator)
-                else:
-                    if enable_write_to_database:
+                if enable_write_to_database:
+                    if log.has_error():
                         post_result(submission_id, CORRECTOR_NAME, 9, 0, log.message())
-                    if log_to_html:
-                        log.log2html(LOG_DIR, None)
+                    else:
+                        post_result(submission_id, CORRECTOR_NAME, 7,
+                                    scorecalculator.score(),
+                                    scorecalculator.message())
+                if log_to_html:
+                    log.log2html(LOG_DIR, scorecalculator)
 
 
         print("Sleeping")

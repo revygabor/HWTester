@@ -21,7 +21,7 @@ class JavaSolution(Solution.Solution):
         if not os.path.exists(self.__bin_dir):
             os.makedirs(self.__bin_dir)
         sp = subprocess.Popen(
-            "find %s -name \*.java -print0 | xargs -0 javac -encoding ISO8859_1 -d %s" % (self.__src_dir.replace(" ","\\ "), self.__bin_dir.replace(" ","\\ ")), shell=True,
+            "find %s -name \*.java -not -path '*/\.*' -print0 | xargs -0 javac -encoding ISO8859_1 -d %s" % (self.__src_dir.replace(" ","\\ "), self.__bin_dir.replace(" ","\\ ")), shell=True,
             executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return sp.communicate()
 
