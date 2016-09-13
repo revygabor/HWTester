@@ -19,5 +19,5 @@ class NNTester(Tester.Tester):
         pass
 
 
-    def test(self, runnable, project_name, solution, log):
+    def test(self, project_name, submission):
         pass

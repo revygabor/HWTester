@@ -1,0 +1,86 @@
+from connection_hfportal import get_submission_file, post_result
+import Utility
+import Log
+import os
+
+class Submission(object):
+    def __init__(self, submission_neptun, submission_id, hw_id, hw_details, config):
+
+        self.WORKING_DIR = config['workingDir']
+        self.EXTRACT_DIR = config['extractDir']
+        self.LOG_DIR = config['logDir']
+        self.CORRECTOR_NAME = config['appName']
+        self.MESSAGE_MAX_LENGTH = config['messageMaxLength']
+        self.log_to_html = config['logToHTML']
+        self.enable_write_to_database = config['enableWriteToDatabase']
+
+        self.submission_id = submission_id
+        self.submission_neptun = submission_neptun
+        self.hw_id = hw_id
+        self.hw_details = hw_details
+
+        self.projectsolutions = {}
+
+        self.log = None
+
+
+    def evaluate(self):
+        data = get_submission_file(self.submission_id)
+        self.log = Log.Log(self.submission_neptun, self.submission_id, self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
+
+        src_dir = os.path.join(self.EXTRACT_DIR, self.hw_details.get("name") or self.hw_id, self.submission_neptun, str(self.submission_id))
+
+        Utility.clean_dir(src_dir)
+        Utility.clean_dir(self.WORKING_DIR)
+
+        try:
+            Utility.unzip(data, src_dir)
+        except Exception as e:
+            self.log.log_error("compile error", str(e))
+
+        scorecalculator = None
+        if not self.log.has_error("compile error"):
+            scorecalculator = Utility.get_class(self.hw_details.get("score calculator"))(
+                self.hw_details.get("score calculator details"))
+
+            self.log.log_start_time()
+            solution_for_type = {}
+            for project_name, project_details in self.hw_details.get("projects").iteritems():
+                solution_type = project_details.get("solution type")
+                if solution_type in solution_for_type:
+                    self.projectsolutions[project_name] = solution_for_type[solution_type]
+                    continue
+
+                solution = Utility.get_class(solution_type)(src_dir, self.WORKING_DIR, self.hw_details.get('firejail profile'))
+                solution_for_type[solution_type] = solution
+                self.projectsolutions[project_name] = solution
+
+                (stdout, stderr) = solution.prepare()
+                if stderr:
+                    self.log.log_error("compile error", stderr)
+
+            for project_name, project_details in self.hw_details.get("projects").iteritems():
+                tester = Utility.get_class(project_details.get("tester"))(project_details.get("tester details"))
+                tester.test(project_name, self)
+
+            self.log.log_finish_time()
+            scorecalculator.set_log(self.log)
+
+        if self.enable_write_to_database:
+            if self.log.has_error():
+                post_result(self.submission_id, self.CORRECTOR_NAME, 9, 0, self.log.message())
+            else:
+                post_result(self.submission_id, self.CORRECTOR_NAME, 7,
+                            scorecalculator.score(),
+                            scorecalculator.message())
+        if self.log_to_html:
+            self.log.log2html(self.LOG_DIR, scorecalculator)
+
+    def run(self, project_name, input, timeout=5.0):
+        solution = self.projectsolutions[project_name]
+        runnable = solution.find_runnable(project_name)
+        if not runnable:
+            return ("", "", "Cannot find class %s with main() function." % project_name)
+        else:
+            return solution.run(runnable, input, timeout)
+

@@ -4,10 +4,7 @@ class LineByLineEqualEvaluator(Evaluator.Evaluator):
     def __init__(self, details):
         pass
 
-    def evaluate(self, input, target_output, output, error, log):
-        if error:
-            return (0.0, "Runtime error:\n%s\n" % error)
-
+    def evaluate(self, input, target_output, output, log):
         if output != target_output:
             output_lines = output.split("\n")
             target_output_lines = target_output.split("\n")

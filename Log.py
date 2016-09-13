@@ -53,6 +53,7 @@ class Log(object):
         if not os.path.exists(path):
             os.makedirs(path)
         with open(os.path.join(path, "log_%s.html" % self.data["id"]), "w") as file:
+            file.write("<body>\n")
             file.write("<b>ID:</b> %s <br>\n" % (self.data["id"]))
             file.write("<b>HW ID:</b> %s <br>\n" % (self.data["hwid"]))
             file.write("<b>NEPTUN:</b> %s <br>\n" % (self.data["neptun"]))
@@ -93,4 +94,5 @@ class Log(object):
             if score_calculator:
                 file.write("<br><br><b>SCORE TO HF PORTAL:</b> %s <br>\n" % (str(score_calculator.score())))
                 file.write("<b>MESSAGE TO HF PORTAL:</b><br>\n%s <br>\n" % (score_calculator.message()))
+            file.write("</body>\n")
         pass

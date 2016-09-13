@@ -7,10 +7,7 @@ class DistributionEvaluator(Evaluator.Evaluator):
         self.details = details
         pass
 
-    def evaluate(self, input, target_output, output, error, log):
-        if error:
-            return (0.0, "Runtime error:\n%s\n" % error)
-
+    def evaluate(self, input, target_output, output, log):
         output_lines = output.split("\n")
         target_output_lines = target_output.split("\n")
 

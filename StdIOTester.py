@@ -20,7 +20,7 @@ class StdIOTester(Tester.Tester):
         pass
 
 
-    def test(self, runnable, project_name, solution, log):
+    def test(self, project_name, submission):
         for data in self.__tests:
             timeout = self.__default_timeout
             if isinstance(data, dict):
@@ -31,18 +31,22 @@ class StdIOTester(Tester.Tester):
                 input = data[0]
                 target_output = data[1]
 
-            if not runnable:
-                log.log_test(project_name, "", "", "", 0, "Cannot find class %s with main() function." % project_name)
-                break
+            (stdout, stderr, extraerr) = submission.run(project_name, input, timeout = timeout)
 
-            (stdout, stderr, extraerr) = solution.run(runnable, input, timeout = timeout)
-
-            stdout = stdout.strip()
+            stdout = stdout.decode('utf-8','ignore').encode('ascii','replace').strip()
             target_output = target_output.strip()
 
-            (result, message) = self.evaluator.evaluate(input, target_output, stdout, stderr or extraerr, log)
 
-            log.log_test(project_name, input, target_output, stdout, result, message)
+            if not (stderr or extraerr):
+                (result, message) = self.evaluator.evaluate(input, target_output, stdout, submission.log)
+            else:
+                result = 0
+                if stderr:
+                    message = "Runtime error:\n%s" % stderr
+                else:
+                    message = extraerr
+
+            submission.log.log_test(project_name, input, target_output, stdout, result, message)
 
             if self.__break_on_first_error and (stderr or extraerr):
                 break
