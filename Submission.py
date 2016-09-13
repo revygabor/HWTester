@@ -78,9 +78,8 @@ class Submission(object):
 
     def run(self, project_name, input, timeout=5.0):
         solution = self.projectsolutions[project_name]
-        runnable = solution.find_runnable(project_name)
-        if not runnable:
-            return ("", "", "Cannot find class %s with main() function." % project_name)
+        (runnable, extraerr) = solution.find_runnable(project_name)
+        if extraerr or not runnable:
+            return ("", "", extraerr)
         else:
             return solution.run(runnable, input, timeout)
-

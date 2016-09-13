@@ -31,8 +31,8 @@ class JavaSolution(Solution.Solution):
             if fullname in files:
                 tmp = root.split(os.sep)[1:]
                 tmp.append(name)
-                return ".".join(tmp)
-        return None
+                return (".".join(tmp), None)
+        return (None, "Cannot find class %s with main() function." % name)
 
     def __run_firejail_java(self, classname, input, timeout=5.0):
         classpath = "."

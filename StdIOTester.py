@@ -8,15 +8,12 @@ class StdIOTester(Tester.Tester):
         super(StdIOTester, self).__init__(details)
 
         tests_file = details["tests"]
-        default_timeout = details["default timeout"] or 5.0
-        break_on_first_error = details["break on first error"]
-        break_on_first_wrong = details["break on first wrong"]
 
         with open(tests_file, "r") as data_file:
             self.__tests = json.load(data_file)
-        self.__break_on_first_error = break_on_first_error
-        self.__break_on_first_wrong = break_on_first_wrong
-        self.__default_timeout = default_timeout
+        self.__break_on_first_error = details["break on first error"]
+        self.__break_on_first_wrong = details["break on first wrong"]
+        self.__default_timeout = details.get("default timeout") or 5.0
         pass
 
 
