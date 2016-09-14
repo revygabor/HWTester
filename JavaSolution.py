@@ -29,7 +29,10 @@ class JavaSolution(Solution.Solution):
         fullname = name + ".class"
         for root, dirs, files in os.walk(self.__bin_dir):
             if fullname in files:
-                tmp = root.split(os.sep)[1:]
+                reldir = os.path.relpath(root,self.__bin_dir)
+                tmp = reldir.split(os.sep)
+                if (reldir=="."):
+                    tmp = []
                 tmp.append(name)
                 return (".".join(tmp), None)
         return (None, "Cannot find class %s with main() function." % name)
@@ -38,6 +41,10 @@ class JavaSolution(Solution.Solution):
         classpath = "."
         return Utility.run_firejail("java -Djava.security.manager -cp %s %s" % (classpath, classname), input,
                                     self.__firejail_profile_file, timeout=timeout)
+
+    def run_java(self, classname, input, timeout=5.0):
+        classpath = self.__bin_dir
+        return Utility.run("java -Djava.security.manager -cp %s %s" % (classpath, classname), input, timeout=timeout)
 
     def prepare(self):
         return self.__java_compile_all()

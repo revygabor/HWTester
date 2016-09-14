@@ -22,13 +22,8 @@ def unzip(data, target_dir, filename=None):
     else:
         submission_zipfile.extractall(target_dir)
 
-def run_firejail(command_with_arguments, input, firejail_profile_file=None, timeout = 5.0):
-    params = ["firejail", "--quiet"]
-    if firejail_profile_file:
-        params.append("--profile=%s" % firejail_profile_file)
-    params.extend(command_with_arguments.split())
-
-    sp = subprocess.Popen(params, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=4096, preexec_fn=os.setsid)
+def run(command_with_arguments, input, timeout = 5.0):
+    sp = subprocess.Popen(command_with_arguments.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=4096, preexec_fn=os.setsid)
     starttime = time.clock()
 
     file_flags = fcntl.fcntl(sp.stdout.fileno(), fcntl.F_GETFL)
@@ -69,6 +64,14 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))
+
+def run_firejail(command_with_arguments, input, firejail_profile_file=None, timeout = 5.0):
+    params = ["firejail", "--quiet"]
+    if firejail_profile_file:
+        params.append("--profile=%s" % firejail_profile_file)
+    params.extend(command_with_arguments.split())
+    return run(" ".join(params), input=input, timeout=timeout)
+
 
 def get_class(classpath):
     if not classpath.endswith(".py"):

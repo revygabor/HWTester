@@ -26,7 +26,7 @@ class DistributionEvaluator(Evaluator.Evaluator):
                     dict[target_values[j]].append(values[j])
                 else:
                     if float(values[j]) != float(target_values[j]):
-                        return (0, "Error in line %d at value %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, j+1, log.truncate(output), input))
+                        return (0, "Wrong value in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, j+1, log.truncate(output), input))
 
         for k, v in dict.iteritems():
             dist = self.details[k]
