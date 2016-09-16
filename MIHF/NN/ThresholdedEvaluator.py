@@ -30,8 +30,6 @@ class ThresholdedEvaluator(Evaluator.Evaluator):
                         i + 1, j + 1, log.truncate(output), input))
                 except:
                     return (
-                    0, "Error in line %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
-
-
+                    0, "Error in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, j + 1, log.truncate(output), input))
 
         return (1.0, "")

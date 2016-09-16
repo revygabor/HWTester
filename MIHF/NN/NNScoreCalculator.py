@@ -11,19 +11,30 @@ class NNScoreCalculator(ScoreCalculator.ScoreCalculator):
 
     def score(self):
         totalscore = 0
-        for project_name in self.__details["project_order"]:
+
+        for i in range(len(self.__details["project_order"])):
+            project_name = self.__details["project_order"][i]
+            score = int(self.__details["scores"][i])
+            min_required_total_score = int(self.__details["min_required_total_scores"][i])
             results = self.__log.data["results"].get(project_name)
             if not results:
                 continue
-            allgood = True
-            for result in results:
-                res = result["result"]
-                if res < 1.0:
-                    allgood = False
-            if allgood:
-                totalscore += 1
-        if totalscore == 5:
-            totalscore = 15
+            all_good = True
+
+            if (project_name != "nn_solution_five"):
+                for result in results:
+                    res = result["result"]
+                    if res < 1.0:
+                        all_good = False
+                if all_good:
+                    if (totalscore >= min_required_total_score):
+                        totalscore += score
+            else:
+                res = results[0]["result"]
+                if (totalscore >= min_required_total_score):
+                    totalscore += min(score, max(0, int(score * res)))
+
+
         return totalscore
 
     def message(self):

@@ -21,9 +21,16 @@ class JavaSolution(Solution.Solution):
         if not os.path.exists(self.__bin_dir):
             os.makedirs(self.__bin_dir)
         sp = subprocess.Popen(
-            "find %s -name \*.java -not -path '*/\.*' -print0 | xargs -0 javac -encoding ISO8859_1 -d %s" % (self.__src_dir.replace(" ","\\ "), self.__bin_dir.replace(" ","\\ ")), shell=True,
+            "find %s -name \*.java -not -path '*/\.*' -print0 | xargs -0 javac -nowarn -encoding ISO8859_1 -d %s" % (self.__src_dir.replace(" ","\\ "), self.__bin_dir.replace(" ","\\ ")), shell=True,
             executable='/bin/bash', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return sp.communicate()
+        (stdout, stderr) = sp.communicate()
+        if stderr:
+            new_stderr = []
+            for line in stderr.split("\n"):
+                if not line.startswith("Note:"):
+                    new_stderr.append(line)
+            stderr="\n".join(new_stderr)
+        return (stdout, stderr)
 
     def __find_java_class_with_package(self, name):
         fullname = name + ".class"
