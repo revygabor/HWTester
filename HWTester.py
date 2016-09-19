@@ -16,11 +16,17 @@ if __name__ == "__main__":
         for hw_id, hw_details in hw_data.iteritems():
             print("Checking submissions for: %s (%s)" % (hw_details.get("name") or hw_id, hw_id))
             for submission_data in get_submissions(hw_id):
-                submission_id = submission_data[0]
-                submission_neptun = submission_data[1]
-                print("Testing submission: %s (%s)" % (submission_neptun, submission_id))
+                submission_details = {}
+                submission_details["id"] = submission_data[0]
+                submission_details["neptun"] = submission_data[1]
+                personal = ""
+                if (len(submission_data) > 2):
+                    submission_details["personal_index"] = submission_data[2]
+                    personal = "pid: %s" % submission_details["personal_index"]
 
-                sub = Submission.Submission(submission_neptun, submission_id, hw_id, hw_details, config)
+                print("Testing submission: %s (%s) %s" % (submission_details["neptun"], submission_details["id"], personal))
+
+                sub = Submission.Submission(submission_details, hw_id, hw_details, config)
                 sub.evaluate()
 
         print("Sleeping")

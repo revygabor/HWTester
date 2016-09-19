@@ -4,7 +4,7 @@ import Log
 import os
 
 class Submission(object):
-    def __init__(self, submission_neptun, submission_id, hw_id, hw_details, config):
+    def __init__(self, submission_details, hw_id, hw_details, config):
 
         self.WORKING_DIR = config['workingDir']
         self.EXTRACT_DIR = config['extractDir']
@@ -14,8 +14,7 @@ class Submission(object):
         self.log_to_html = config['logToHTML']
         self.enable_write_to_database = config['enableWriteToDatabase']
 
-        self.submission_id = submission_id
-        self.submission_neptun = submission_neptun
+        self.submission_details = submission_details
         self.hw_id = hw_id
         self.hw_details = hw_details
 
@@ -25,10 +24,10 @@ class Submission(object):
 
 
     def evaluate(self):
-        data = get_submission_file(self.submission_id)
-        self.log = Log.Log(self.submission_neptun, self.submission_id, self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
+        data = get_submission_file(self.submission_details["id"])
+        self.log = Log.Log(self.submission_details["neptun"], self.submission_details["id"], self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
 
-        src_dir = os.path.join(self.EXTRACT_DIR, self.hw_details.get("name") or self.hw_id, self.submission_neptun, str(self.submission_id))
+        src_dir = os.path.join(self.EXTRACT_DIR, self.hw_details.get("name") or self.hw_id, self.submission_details["neptun"], str(self.submission_details["id"]))
 
         Utility.clean_dir(src_dir)
         Utility.clean_dir(self.WORKING_DIR)
@@ -68,9 +67,9 @@ class Submission(object):
 
         if self.enable_write_to_database:
             if self.log.has_error():
-                post_result(self.submission_id, self.CORRECTOR_NAME, 9, 0, self.log.message())
+                post_result(self.submission_details["id"], self.CORRECTOR_NAME, 9, 0, self.log.message())
             else:
-                post_result(self.submission_id, self.CORRECTOR_NAME, 7,
+                post_result(self.submission_details["id"], self.CORRECTOR_NAME, 7,
                             scorecalculator.score(),
                             scorecalculator.message())
         if self.log_to_html:
@@ -83,3 +82,9 @@ class Submission(object):
             return ("", "", extraerr)
         else:
             return solution.run(runnable, input, timeout)
+
+    def is_personal(self):
+        return "personal_index" in self.submission_details
+
+    def personal_index(self):
+        return int(self.submission_details.get("personal_index"))

@@ -14,11 +14,17 @@ class StdIOTester(Tester.Tester):
         self.__break_on_first_error = details["break on first error"]
         self.__break_on_first_wrong = details["break on first wrong"]
         self.__default_timeout = details.get("default timeout") or 5.0
+        self.__personal = details.get("personal") or False
         pass
 
 
     def test(self, project_name, submission):
-        for data in self.__tests:
+        if submission.is_personal():
+            tests = self.__tests[submission.personal_index()]
+        else:
+            tests = self.__tests
+
+        for data in tests:
             timeout = self.__default_timeout
             if isinstance(data, dict):
                 input = data["input"]
