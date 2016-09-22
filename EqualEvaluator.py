@@ -5,7 +5,7 @@ class EqualEvaluator(Evaluator.Evaluator):
         pass
 
     def evaluate(self, input, target_output, output, log):
-        if output != target_output:
+        if output.strip() != target_output.strip():
             return (0.0, "Wrong answer in output: \n%s\n\nfor input: \n%s\n" % (log.truncate(output), input))
 
         return (1.0, "")

@@ -3,10 +3,9 @@ import os
 
 class Log(object):
 
-    def __init__(self, neptun, id, hwid, hw_name, max_len):
+    def __init__(self, submission_details, hwid, hw_name, max_len):
         self.data = {}
-        self.data["neptun"] = neptun
-        self.data["id"] = id
+        self.data.update(submission_details)
         self.data["hwid"] = hwid
         self.data["hw_name"] = hw_name
         self.data["errors"] = {}
@@ -57,6 +56,8 @@ class Log(object):
             file.write("<b>ID:</b> %s <br>\n" % (self.data["id"]))
             file.write("<b>HW ID:</b> %s <br>\n" % (self.data["hwid"]))
             file.write("<b>NEPTUN:</b> %s <br>\n" % (self.data["neptun"]))
+            if "personal_index" in self.data:
+                file.write("<b>PID:</b> %s <br>\n" % (self.data["personal_index"]))
 
             if "compile error" in self.data["errors"]:
                 file.write("<b>COMPILE ERROR:</b> %s <br>\n" % (self.data["errors"]["compile error"]))
@@ -87,7 +88,8 @@ class Log(object):
                         file.write(str(row['result']))
                         file.write("</td>\n")
                         file.write("<td>")
-                        file.write(row['message'].replace("\n", "<br>"))
+                        if row['message']:
+                            file.write(row['message'].replace("\n", "<br>"))
                         file.write("</td>\n")
                         file.write("</tr>\n")
                     file.write("</table>")

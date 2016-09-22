@@ -25,7 +25,7 @@ class Submission(object):
 
     def evaluate(self):
         data = get_submission_file(self.submission_details["id"])
-        self.log = Log.Log(self.submission_details["neptun"], self.submission_details["id"], self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
+        self.log = Log.Log(self.submission_details, self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
 
         src_dir = os.path.join(self.EXTRACT_DIR, self.hw_details.get("name") or self.hw_id, self.submission_details["neptun"], str(self.submission_details["id"]))
 

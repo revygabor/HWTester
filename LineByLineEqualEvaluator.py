@@ -16,9 +16,9 @@ class LineByLineEqualEvaluator(Evaluator.Evaluator):
                     if errmsg:
                         return (float(i) / len(target_output_lines), errmsg)
                     return (float(i) / len(target_output_lines), "Missing line %d in output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input))
-                if output_lines[i] != target_output_lines[i] and not errmsg:
+                if output_lines[i].strip() != target_output_lines[i].strip() and not errmsg:
                     errmsg = "Wrong answer in line %d of output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input)
-                if output_lines[i] == target_output_lines[i]:
+                if output_lines[i].strip() == target_output_lines[i].strip():
                     goodlines += 1
             return (float(goodlines) / len(target_output_lines), errmsg)
 

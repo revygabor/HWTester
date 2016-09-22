@@ -30,4 +30,4 @@ if __name__ == "__main__":
                 sub.evaluate()
 
         print("Sleeping")
-        time.sleep(60)
+        time.sleep(10)
