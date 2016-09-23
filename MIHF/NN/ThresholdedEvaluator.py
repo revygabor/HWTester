@@ -26,8 +26,8 @@ class ThresholdedEvaluator(Evaluator.Evaluator):
                     minv = min(tv * (1 + threshold) + ss * threshold, tv * (1 - threshold) - ss * threshold)
                     maxv = max(tv * (1 + threshold) + ss * threshold, tv * (1 - threshold) - ss * threshold)
                     if v < minv or v > maxv:
-                        return (0, "Wrong value in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (
-                        i + 1, j + 1, log.truncate(output), input))
+                        return (0, "Wrong value in line %d at position %d (correct value: %f) in output: \n%s\n\nfor input: \n%s\n" % (
+                        i + 1, j + 1, tv, log.truncate(output), input))
                 except:
                     return (
                     0, "Error in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, j + 1, log.truncate(output), input))
