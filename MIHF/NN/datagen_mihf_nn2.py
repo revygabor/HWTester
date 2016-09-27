@@ -3,9 +3,12 @@ import random
 import JavaSolution
 
 
-inps = ["2,3,2,1","1,1","1,2,1","1,4,6,1","3,3","2,6,2,4"]
+inps = ["1,2,1","1,1","2,3,2,1","1,4,6,1","3,3","2,6,2,4"]
 
 to_json = []
+
+to_json.append({"input":"2,3,1\n1,0,-0.5\n0,1,-0.5\n1,1,-1\n2,2,-2,0\n4\n0,0\n0,1\n1,0\n1,1\n\n"})
+
 for inp in inps:
     sample = {}
     to_json.append(sample)
@@ -40,10 +43,11 @@ for inp in inps:
     input = "\n".join(input)
     sample["input"] = input
 
+for sample in to_json:
     sol = JavaSolution.JavaSolution("/home/steve/workspace/MI-HF-NN/src/","/home/steve/workspace/MI-HF-NN/bin/")
     sol.prepare()
     runnable, _ = sol.find_runnable("NNSolutionTwo")
-    (stdout, stderr, extraerr) = sol.run_java(runnable,input)
+    (stdout, stderr, extraerr) = sol.run_java(runnable,sample["input"])
     sample["target"] = stdout
 
 with open("iodata_mihf_nn2.json", "w") as file:
