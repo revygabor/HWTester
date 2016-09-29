@@ -45,9 +45,9 @@ class StdIOTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s" % stderr
+                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,input)
                 else:
-                    message = extraerr
+                    message = "Error:\n%s\n\nfor input:\n%s" % (extraerr,input)
 
             submission.log.log_test(project_name, input, target_output, stdout, result, message)
 

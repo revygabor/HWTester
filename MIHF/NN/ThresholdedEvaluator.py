@@ -16,7 +16,7 @@ class ThresholdedEvaluator(Evaluator.Evaluator):
             values = output_lines[i].split(",")
             target_values = target_output_lines[i].split(",")
             if len(values) != len(target_values):
-                return (0, "Value count mismatch in line %d in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
+                return (0, "Value count mismatch in line %d in output, expecting %d values: \n%s\n\nfor input: \n%s\n" % (i + 1, len(target_values), log.truncate(output), input))
             for j in range(len(values)):
                 try:
                     v = float(values[j])

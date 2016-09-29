@@ -18,7 +18,9 @@ class DistributionEvaluator(Evaluator.Evaluator):
             values = output_lines[i].split(",")
             target_values = target_output_lines[i].split(",")
             if len(values) != len(target_values):
-                return (0, "Error in line %d in output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input))
+                return (0,
+                        "Value count mismatch in line %d in output, expecting %d values: \n%s\n\nfor input: \n%s\n" % (
+                        i + 1, len(target_values), log.truncate(output), input))
             for j in range(len(values)):
                 try:
                     if target_values[j] in self.details:
@@ -27,8 +29,8 @@ class DistributionEvaluator(Evaluator.Evaluator):
                         dict[target_values[j]].append(float(values[j]))
                     else:
                         if float(values[j]) != float(target_values[j]):
-                            return (0, "Wrong value in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (
-                            i + 1, j + 1, log.truncate(output), input))
+                            return (0, "Wrong value in line %d at position %d (correct value: %f) in output: \n%s\n\nfor input: \n%s\n" % (
+                            i + 1, j + 1, float(target_values[j]), log.truncate(output), input))
                 except:
                     return (
                         0, "Error in line %d at position %d in output: \n%s\n\nfor input: \n%s\n" % (
