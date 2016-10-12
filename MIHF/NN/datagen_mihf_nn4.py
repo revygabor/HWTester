@@ -13,7 +13,7 @@ to_json.append({"input":"1,0,0\n2,3,1\n1,0,-0.4\n0,1,-0.5\n0.9,1,-1\n2,1.9,-2,0\
 to_json.append({"input":"1,0.1,0.5\n2,3,1\n1,0,-0.4\n0,1,-0.5\n0.9,1,-1\n2,1.9,-2,0\n4\n0,0,0\n1,0,1\n0.2,0.2,0\n0.8,0.2,1\n\n"})
 to_json.append({"input":"1,0.1,0.5\n2,3,1\n1,0,-0.4\n0,1,-0.5\n0.9,1,-1\n2,1.9,-2,0\n8\n0,0,0\n0,1,1\n1,0,1\n1,1,0\n0.2,0.2,0\n0.2,0.8,1\n0.8,0.2,1\n0.8,0.8,0\n\n"})
 
-for z in range(len(in
+for z in range(len(inps)):
 
     sample = {}
     to_json.append(sample)
