@@ -8,8 +8,10 @@ class NNBinaryClassifierEvaluator(Evaluator.Evaluator):
         output_lines = output.split("\n")
         target_output_lines = target_output.split("\n")
 
-        if len(output_lines) == 0 or output_lines[0] != target_output_lines[0]:
-            return (0, "Error in line 1 in output: \n%s\n\nfor input: \n%s\n" % (i + 1, log.truncate(output), input))
+        if len(output_lines) == 0:
+        	return (0, "Missing line 1 in output.")
+        if float(output_lines[0]) != float(target_output_lines[0]):
+            return (0, "Error in line 1 in output: \n%s  \n\n expecting: %s\n\n" % (str(output_lines[0]), str(target_output_lines[0])))
 
 
         err = 0
