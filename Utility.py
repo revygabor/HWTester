@@ -32,35 +32,38 @@ def run(command_with_arguments, input, timeout = 5.0):
     file_flags = fcntl.fcntl(sp.stderr.fileno(), fcntl.F_GETFL)
     fcntl.fcntl(sp.stderr.fileno(), fcntl.F_SETFL, file_flags | os.O_NDELAY)
 
-    sp.stdin.write(input)
-    sp.stdin.close()
+    try:
+        sp.stdin.write(input)
+        sp.stdin.close()
 
-    stdoutList = []
-    stderrList = []
-    extraerrList = []
-    totalOutput = 0
+        stdoutList = []
+        stderrList = []
+        extraerrList = []
+        totalOutput = 0
 
-    while totalOutput < 4096 * 1024 and sp.poll() is None and time.clock() - starttime < timeout:
-        try:
-            r = sp.stdout.read()
-            totalOutput = totalOutput + len(r)
-            stdoutList.append(r)
-        except:
-            pass
-        try:
-            r = sp.stderr.read()
-            totalOutput = totalOutput + len(r)
-            stderrList.append(r)
-        except:
-            pass
+        while totalOutput < 4096 * 1024 and sp.poll() is None and time.clock() - starttime < timeout:
+            try:
+                r = sp.stdout.read()
+                totalOutput = totalOutput + len(r)
+                stdoutList.append(r)
+            except:
+                pass
+            try:
+                r = sp.stderr.read()
+                totalOutput = totalOutput + len(r)
+                stderrList.append(r)
+            except:
+                pass
 
-    if sp.poll() is None:
-        if totalOutput >= 4096 * 1024:
-            extraerrList.append("Too much output data received, killing process!\n")
-        if time.clock() - starttime >= timeout:
-            extraerrList.append("Maximum allowed time exceeded, killing process!\n")
-        os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
-        #sp.kill()
+        if sp.poll() is None:
+            if totalOutput >= 4096 * 1024:
+                extraerrList.append("Too much output data received, killing process!\n")
+            if time.clock() - starttime >= timeout:
+                extraerrList.append("Maximum allowed time exceeded, killing process!\n")
+            os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
+            #sp.kill()
+    except:
+        extraerrList.append("Cannot write input to program, broken pipe!\n")
 
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))

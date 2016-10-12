@@ -33,4 +33,9 @@ class NNBinaryClassifierEvaluator(Evaluator.Evaluator):
         minerr = float(self.details["min_err_rate"])
         maxerr = float(self.details["max_err_rate"])
 
-        return (min(1.0,max(0.0,(maxerr - err_rate) / (maxerr - minerr))), "Classification error rate: %f" % err_rate)
+        msgtip = ""
+        if (err_rate >= 0.4):
+            msgtip = "Gyozodjon meg rola, hogy a helyes mintakeszletet hasznalja: http://home.mit.bme.hu/~engedy/MI/spambase_train.csv"
+            pass
+        msg = "Classification error rate: %f\n\n%s" % (err_rate, msgtip)
+        return (min(1.0,max(0.0,(maxerr - err_rate) / (maxerr - minerr))), msg)
