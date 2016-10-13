@@ -76,7 +76,7 @@ class Log(object):
                     for row in resultdata:
                         file.write("<tr>\n")
                         file.write("<td>")
-                        file.write(row['input'].replace("\n", "<br>"))
+                        file.write(str(row['input']).replace("\n", "<br>"))
                         file.write("</td>\n")
                         file.write("<td>")
                         file.write(row['target_output'].replace("\n", "<br>"))
