@@ -32,13 +32,13 @@ def run(command_with_arguments, input, timeout = 5.0):
     file_flags = fcntl.fcntl(sp.stderr.fileno(), fcntl.F_GETFL)
     fcntl.fcntl(sp.stderr.fileno(), fcntl.F_SETFL, file_flags | os.O_NDELAY)
 
+    extraerrList = []
+    stdoutList = []
+    stderrList = []
     try:
         sp.stdin.write(input)
         sp.stdin.close()
 
-        stdoutList = []
-        stderrList = []
-        extraerrList = []
         totalOutput = 0
 
         while totalOutput < 4096 * 1024 and sp.poll() is None and time.clock() - starttime < timeout:
