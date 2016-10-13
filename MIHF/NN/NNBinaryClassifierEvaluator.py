@@ -10,9 +10,11 @@ class NNBinaryClassifierEvaluator(Evaluator.Evaluator):
 
         if len(output_lines) == 0:
         	return (0, "Missing line 1 in output.")
-        if float(output_lines[0]) != float(target_output_lines[0]):
+        try:
+            if float(output_lines[0]) != float(target_output_lines[0]):
+                return (0, "Error in line 1 in output: \n%s  \n\n expecting: %s\n\n" % (str(output_lines[0]), str(target_output_lines[0])))
+        except:
             return (0, "Error in line 1 in output: \n%s  \n\n expecting: %s\n\n" % (str(output_lines[0]), str(target_output_lines[0])))
-
 
         err = 0
         total = 0
