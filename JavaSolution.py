@@ -60,4 +60,4 @@ class JavaSolution(Solution.Solution):
         return self.__find_java_class_with_package(project_name)
 
     def run(self, classname, input, timeout=5.0):
-        return self.__run_firejail_java(classname, input, timeout)
+        return self.__run_firejail_java(classname, input, timeout)        

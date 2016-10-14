@@ -24,6 +24,9 @@ class NNTester(Tester.Tester):
         stdout = ""
         if not extraerr:
             (stdout, stderr, extraerr) = submission.run(self.__use_with, real_input,timeout = self.__default_timeout)
+        
+        stdout = stdout.decode('utf-8','ignore').encode('ascii','replace').strip()
+        target_output = target_output.strip()
 
         if not (stderr or extraerr):
             (result, message) = self.evaluator.evaluate(real_input, target_output, stdout, submission.log)
