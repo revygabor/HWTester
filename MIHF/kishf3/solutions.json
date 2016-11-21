@@ -1,0 +1,122 @@
+[
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 3\nFN = 0\nN = 7\nFP = 2\nTN = 5\nTPR = 3/3\nFPR = 2/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 0\nFN = 3\nN = 7\nFP = 2\nTN = 5\nTPR = 0/3\nFPR = 2/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 3\nFN = 0\nN = 7\nFP = 1\nTN = 6\nTPR = 3/3\nFPR = 1/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 3\nFN = 0\nN = 7\nFP = 1\nTN = 6\nTPR = 3/3\nFPR = 1/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 6\nFN = 0\nN = 4\nFP = 1\nTN = 3\nTPR = 6/6\nFPR = 1/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 6\nFN = 0\nN = 4\nFP = 1\nTN = 3\nTPR = 6/6\nFPR = 1/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 3\nFN = 0\nN = 7\nFP = 2\nTN = 5\nTPR = 3/3\nFPR = 2/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 3\nTP = 3\nFN = 0\nN = 7\nFP = 2\nTN = 5\nTPR = 3/3\nFPR = 2/7"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 2\nTN = 4\nTPR = 4/4\nFPR = 2/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 2\nTN = 4\nTPR = 4/4\nFPR = 2/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 1\nTN = 5\nTPR = 4/4\nFPR = 1/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 1\nTN = 5\nTPR = 4/4\nFPR = 1/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 6\nFN = 0\nN = 4\nFP = 1\nTN = 3\nTPR = 6/6\nFPR = 1/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 6\nFN = 0\nN = 4\nFP = 1\nTN = 3\nTPR = 6/6\nFPR = 1/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 1\nTN = 5\nTPR = 4/4\nFPR = 1/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 4\nTP = 4\nFN = 0\nN = 6\nFP = 1\nTN = 5\nTPR = 4/4\nFPR = 1/6"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 6\nFN = 0\nN = 4\nFP = 1\nTN = 3\nTPR = 6/6\nFPR = 1/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 6\nTP = 3\nFN = 3\nN = 4\nFP = 0\nTN = 4\nTPR = 3/6\nFPR = 0/4"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 5\nTP = 5\nFN = 0\nN = 5\nFP = 2\nTN = 3\nTPR = 5/5\nFPR = 2/5"
+    }
+  ],
+  [
+    {
+      "input": "",
+      "target": "P = 5\nTP = 5\nFN = 0\nN = 5\nFP = 2\nTN = 3\nTPR = 5/5\nFPR = 2/5"
+    }
+  ]
+]

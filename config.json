@@ -1,0 +1,231 @@
+{
+  "workingDir": "secure",
+  "extractDir": "/media/50gb/src",
+  "logDir": "/media/50gb/log",
+  "appName": "HWTester",
+  "messageMaxLength": 512,
+  "breakOnFirstError": true,
+  "logToHTML": true,
+  "enableWriteToDatabase": true,
+  "isDebug": false,
+  "homeworkData": {
+    "176": {
+      "name":"Opre HF1",
+      "firejail profile": "secure_firejail_profile",
+      "runnables": {
+        "Main": {
+          "allowed solution": [
+            "JavaSolution"
+          ],
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"LineByLineEqualEvaluator",
+            "evaluator details": {},
+            "tests": "Opre/iodata_opre_hf1.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "ScoreCalculator",
+      "score calculator details": {},
+      "scorelimits": [
+        [
+          0.5,
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "max testcount": 100
+    },
+    "216": {
+      "name":"Opre HF3",
+      "firejail profile": "secure_firejail_profile",
+      "runnables": {
+        "Main": {
+          "allowed solution": [
+            "JavaSolution"
+          ],
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"EqualEvaluator",
+            "evaluator details": {},
+            "tests": "Opre/iodata_opre_hf3b.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "ScoreCalculator",
+      "score calculator details": {},
+      "scorelimits": [
+        0.4,
+        0.7,
+        1.0
+      ],
+      "max testcount": 100
+    },
+    "231": {
+      "name":"MIHF NN",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "NNSolutionOne": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/DistributionEvaluator",
+            "evaluator details": {
+              "N": {
+                "distribution" : "normal",
+                "mean" : 0,
+                "std" : 0.1,
+                "significance" : 0.01
+              }
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn1.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionTwo": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn2.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionThree": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn3.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionFour": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn4.json",
+            "default timeout": 15.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "nn_solution_five": {
+          "solution type": "TextSolution",
+          "tester": "MIHF/NN/NNTester",
+          "tester details": {
+            "use with": "NNSolutionTwo",
+            "evaluator":"MIHF/NN/NNBinaryClassifierEvaluator",
+            "evaluator details": {
+              "min_err_rate" : 0.08,
+              "max_err_rate" : 0.24
+            },
+            "tests":"MIHF/NN/iodata_mihf_nn5.json",
+            "default timeout": 5.0
+          }
+        }
+      },
+      "score calculator": "MIHF/NN/NNScoreCalculator",
+      "score calculator details": {
+        "project_order":["NNSolutionOne","NNSolutionTwo","NNSolutionThree","NNSolutionFour","nn_solution_five"],
+        "scores":["1","3","4","5","2"],
+        "min_required_total_scores":["0","0","0","0","13"]
+      }
+    },
+    "244":{
+      "name":"MIHF kishf3",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "solution":{
+          "solution type": "TextSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "personal": true,
+            "evaluator":"LineByLineEqualEvaluator",
+            "evaluator details": {},
+            "tests":"MIHF/kishf3/solutions.json",
+            "default timeout": 5.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "SimpleScoreCalculator",
+      "score calculator details": {
+        "project_order":["solution"],
+        "scores":["1"]
+      }
+    },
+    "232": {
+      "name":"MIHF Bayes",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "MIHF/Bayes/BayesMatrixFactorTester",
+          "tester details": {
+            "evaluator":"MIHF/Bayes/BayesMatrixFactorEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Bayes/tests.json",
+            "default timeout": 10.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "MIHF/Bayes/BayesMatrixFactorScoreCalculator",
+      "score calculator details": {
+        "score":15
+      }
+    },
+    "233": {
+      "name":"Search",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/Search/SearchEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Search/tests.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleTestBasedScoreCalculator",
+      "score calculator details": {
+        "project_order":["Main"],
+        "scores_per_test":1
+      } 
+    }
+  }
+}
