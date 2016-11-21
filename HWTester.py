@@ -19,6 +19,9 @@ if __name__ == "__main__":
                 submission_details = {}
                 submission_details["id"] = submission_data[0]
                 submission_details["neptun"] = submission_data[1]
+		if config['isDebug']:
+                    if not submission_details["neptun"].startswith("TEST"):
+                        continue
                 personal = ""
                 if (len(submission_data) > 2):
                     submission_details["personal_index"] = submission_data[2]
