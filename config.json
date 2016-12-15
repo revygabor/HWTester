@@ -156,6 +156,93 @@
         "min_required_total_scores":["0","0","0","0","13"]
       }
     },
+    "269": {
+      "name":"IDA NN HF",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "NNSolutionOne": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/DistributionEvaluator",
+            "evaluator details": {
+              "N": {
+                "distribution" : "normal",
+                "mean" : 0,
+                "std" : 0.1,
+                "significance" : 0.01
+              }
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn1.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionTwo": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn2.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionThree": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn3.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "NNSolutionFour": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/NN/ThresholdedEvaluator",
+            "evaluator details": {
+              "threshold":0.001
+            },
+            "tests": "MIHF/NN/iodata_mihf_nn4.json",
+            "default timeout": 15.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        },
+        "nn_solution_five": {
+          "solution type": "TextSolution",
+          "tester": "MIHF/NN/NNTester",
+          "tester details": {
+            "use with": "NNSolutionTwo",
+            "evaluator":"MIHF/NN/NNBinaryClassifierEvaluator",
+            "evaluator details": {
+              "min_err_rate" : 0.08,
+              "max_err_rate" : 0.24
+            },
+            "tests":"MIHF/NN/iodata_mihf_nn5.json",
+            "default timeout": 5.0
+          }
+        }
+      },
+      "score calculator": "MIHF/NN/NNScoreCalculator",
+      "score calculator details": {
+        "project_order":["NNSolutionOne","NNSolutionTwo","NNSolutionThree","NNSolutionFour","nn_solution_five"],
+        "scores":["1","3","4","5","2"],
+        "min_required_total_scores":["0","0","0","0","13"]
+      }
+    },    
     "244":{
       "name":"MIHF kishf3",
       "firejail profile": "secure_firejail_profile",
@@ -204,7 +291,7 @@
       }
     },
     "233": {
-      "name":"Search",
+      "name":"MIHF Search",
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {

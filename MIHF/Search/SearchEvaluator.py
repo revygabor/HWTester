@@ -45,9 +45,9 @@ class SearchEvaluator(Evaluator.Evaluator):
 
             return (1, "")
 
-        except ValueError as err:
+        except (ValueError, OverflowError) as err:
             return (0, "{0}\nfor input:\n\n {1}".format(err.message, input))
         except:
             print sys.exc_info()[0]
-            return (0, "Unknown error\nfor input:\n\n {1}".format(err.message, input))
+            return (0, "Unknown error\nfor input:\n\n {1}".format(sys.exc_info()[0], input))
 
