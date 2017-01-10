@@ -1,0 +1,19 @@
+{
+  "extractDir": "src_plagiarism",
+  "logDir": "log_plagiarism",
+  "logToHTML": true,
+  "homeworkData": {
+    "231": {
+      "filename filters":[".*\\.java", ".*\\.txt"],
+      "ignore dirs":["org", "apache", "commons", "math3"]
+    },
+    "232": {
+      "filename filters":[".*\\.java"],
+      "ignore dirs":["org", "apache", "commons", "math3"]
+    },
+    "233": {
+      "filename filters":[".*\\.java"],
+      "ignore dirs":["org", "apache", "commons", "math3"]
+    }
+  }
+}

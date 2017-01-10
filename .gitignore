@@ -4,6 +4,8 @@ src/
 secure/
 log/
 log.txt
+src_plagiarism/
+log_plagiarism/
 
 .idea/*
 
