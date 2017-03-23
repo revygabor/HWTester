@@ -75,7 +75,7 @@ class Submission(object):
             else:
                 post_result(self.submission_details["id"], self.CORRECTOR_NAME, 7,
                             scorecalculator.score(),
-                            scorecalculator.message())
+                            scorecalculator.message(),scorecalculator.getimscpoint())
         if self.log_to_html:
             self.log.log2html(self.LOG_DIR, scorecalculator)
 

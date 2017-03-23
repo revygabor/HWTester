@@ -36,12 +36,13 @@ def get_submission_file(id):
 10 = El?feldolgoz?s megszak?tva
 '''
 
-def post_result(id, sender, state, result, comment):    
+def post_result(id, sender, state, result, comment, imscpoint = 0):    
     values = {
         'sender': sender,
         'state' : state,
         'result' : result,
-        'comment' : comment
+        'comment' : comment,
+		'imsc' : imscpoint
     }
     data = urllib.urlencode(values)
     response = urlopen('https://%s/api.php?set_result=%d' % (get_host(), int(id)), data)

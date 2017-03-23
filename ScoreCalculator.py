@@ -7,7 +7,10 @@ class ScoreCalculator(object):
         self.__log = log
 
     def score(self):
-        raise NotImplementedError("not implemented")
+        raise NotImplementedError("score not implemented")
 
     def message(self):
-        raise NotImplementedError("not implemented")
+        raise NotImplementedError("message not implemented")
+
+    def getimscpoint(self): 
+        return 0

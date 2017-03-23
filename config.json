@@ -30,7 +30,8 @@
       "score calculator details": {
 		 "project_order":["Main"],
         "scores":["3"],
-        "min_required_total_scores":["0"]
+        "min_required_total_scores":["0"],
+		"imsc_point_on_maxscore" : true
       },
       "scorelimits": [
         [
