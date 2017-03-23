@@ -12,11 +12,9 @@
     "176": {
       "name":"Opre HF1",
       "firejail profile": "secure_firejail_profile",
-      "runnables": {
+      "projects": {
         "Main": {
-          "allowed solution": [
-            "JavaSolution"
-          ],
+          "solution type": "JavaSolution",
           "tester": "StdIOTester",
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
@@ -28,8 +26,12 @@
           }
         }
       },
-      "score calculator": "ScoreCalculator",
-      "score calculator details": {},
+      "score calculator": "SimpleScoreCalculator",
+      "score calculator details": {
+		 "project_order":["Main"],
+        "scores":["3"],
+        "min_required_total_scores":["0"]
+      },
       "scorelimits": [
         [
           0.5,

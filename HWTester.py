@@ -27,7 +27,7 @@ if __name__ == "__main__":
                     submission_details["personal_index"] = submission_data[2]
                     personal = "pid: %s" % submission_details["personal_index"]
 
-                print("Testing submission: %s (%s) %s" % (submission_details["neptun"], submission_details["id"], personal))
+                print("Testing submission: %s (%s) %s %s" % (submission_details["neptun"], submission_details["id"], personal, str(hw_details)))
 
                 sub = Submission.Submission(submission_details, hw_id, hw_details, config)
                 sub.evaluate()

@@ -44,6 +44,10 @@ class Submission(object):
 
             self.log.log_start_time()
             solution_for_type = {}
+            if self.hw_details.get("projects") == None:
+                self.log.log_error("hw_details.get returned nonetype",str(self.hw_details))
+                print "hw_details.get returned nonetype", str(self.hw_details)
+                return
             for project_name, project_details in self.hw_details.get("projects").iteritems():
                 solution_type = project_details.get("solution type")
                 if solution_type in solution_for_type:
