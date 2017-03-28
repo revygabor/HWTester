@@ -43,7 +43,43 @@
         ]
       ],
       "max testcount": 100
+    },  
+    "666": {
+      "name":"Opre HF2",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"LineByLineEqualEvaluator",
+            "evaluator details": {},
+            "tests": "Opre/iodata_opre_hf2.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleScoreCalculator",
+      "score calculator details": {
+		 "project_order":["Main"],
+        "scores":["3"],
+        "min_required_total_scores":["0"],
+		"imsc_point_on_maxscore" : true
+      },
+      "scorelimits": [
+        [
+          0.5,
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "max testcount": 12
     },
+	  
     "216": {
       "name":"Opre HF3",
       "firejail profile": "secure_firejail_profile",
