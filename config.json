@@ -44,7 +44,7 @@
       ],
       "max testcount": 100
     },  
-    "666": {
+    "177": {
       "name":"Opre HF2",
       "firejail profile": "secure_firejail_profile",
       "projects": {
