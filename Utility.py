@@ -59,7 +59,7 @@ def run(command_with_arguments, input, timeout = 5.0):
             if totalOutput >= 4096 * 1024:
                 extraerrList.append("Too much output data received, killing process!\n")
             if time.clock() - starttime >= timeout:
-                extraerrList.append("Maximum allowed time exceeded, killing process!\n")
+                extraerrList.append("Maximum allowed time exceeded, killing process! Input was: [%s]\n"%(input))
             os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             #sp.kill()
     except:

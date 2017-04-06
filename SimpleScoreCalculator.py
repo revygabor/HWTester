@@ -21,13 +21,19 @@ class SimpleScoreCalculator(ScoreCalculator.ScoreCalculator):
                 self.imscpoint = 0
                 continue
             all_good = True
+            #print results
+            fracscore = 0
+
             for result in results:
                 res = result["result"]
+                fracscore += res
                 if res < 1.0:
                     all_good = False
                     self.imscpoint = 0
             if all_good:
                 totalscore += score
+            else:
+                totalscore += int (score *( fracscore/len(results)))
         if self.__details["imsc_point_on_maxscore"] and totalscore == maxscore:
             self.imscpoint = 1
         else:
