@@ -40,7 +40,7 @@ class SearchEvaluator(Evaluator.Evaluator):
                 py0 = min(pos,key=lambda x: x[1])[1]-1
                 py1 = max(pos,key=lambda x: x[1])[1]
                 
-                if px1-px0 != dx or py1-py0 != dy:
+                if (px1-px0 != dx or py1-py0 != dy) and (x1-px0 != dy or py1-py0 != dx):
             	    return (0,"Object size mismatch for object {0}: ({1},{2}) given, ({3},{4}) found, for input:\n\n {5}".format(id,dx,dy,px1-px0,py1-py0,input))
 
             return (1, "")
