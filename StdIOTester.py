@@ -2,6 +2,10 @@ import Tester
 import json
 import time
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 class StdIOTester(Tester.Tester):
 
     def __init__(self, details):
@@ -45,7 +49,9 @@ class StdIOTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,input)
+                    
+                    #name = school_name.encode('utf8')
+                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr.encode('utf8'),input.encode('utf8'))
                 else:
                     message = extraerr
 
