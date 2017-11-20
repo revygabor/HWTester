@@ -1,6 +1,10 @@
 import Tester
 import json
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 class NNTester(Tester.Tester):
 
     def __init__(self, details):

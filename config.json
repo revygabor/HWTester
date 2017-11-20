@@ -80,27 +80,31 @@
       "max testcount": 12
     },
 	  
-    "216": {
+    "178": {
       "name":"Opre HF3",
       "firejail profile": "secure_firejail_profile",
-      "runnables": {
+      "projects": {
         "Main": {
-          "allowed solution": [
-            "JavaSolution"
-          ],
+          "solution type": "JavaSolution",
           "tester": "StdIOTester",
           "tester details": {
-            "evaluator":"EqualEvaluator",
+            "evaluator":"LineByLineEqualEvaluator",
             "evaluator details": {},
             "tests": "Opre/iodata_opre_hf3b.json",
             "default timeout": 3.0,
             "break on first error": true,
-            "break on first wrong": true
+            "break on first wrong": false
           }
         }
       },
-      "score calculator": "ScoreCalculator",
-      "score calculator details": {},
+      "score calculator": "SimpleScoreCalculator",
+      "score calculator details": {
+		 "project_order":["Main"],
+        "scores":["3"],
+        "min_required_total_scores":["0"],
+		"imsc_point_on_maxscore" : true
+      },
+	  
       "scorelimits": [
         0.4,
         0.7,
