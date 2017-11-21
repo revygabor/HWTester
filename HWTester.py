@@ -32,5 +32,5 @@ if __name__ == "__main__":
                 sub = Submission.Submission(submission_details, hw_id, hw_details, config)
                 sub.evaluate()
 
-        print("Sleeping")
+        print "Sleeping", time.clock()
         time.sleep(10)

@@ -7,6 +7,7 @@ import fcntl
 import time
 import signal
 import imp
+import sys,traceback
 
 def clean_dir(target_dir):
     if os.path.exists(target_dir):
@@ -23,7 +24,15 @@ def unzip(data, target_dir, filename=None):
         submission_zipfile.extractall(target_dir)
 
 def run(command_with_arguments, input, timeout = 5.0):
-    sp = subprocess.Popen(command_with_arguments.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=4096, preexec_fn=os.setsid)
+    pipe_buffer_size = 4096
+    if len(input) > pipe_buffer_size:
+        stdin_buffer_file = open('stdin_buffer_file.tmp','w')
+        stdin_buffer_file.write(input)
+        stdin_buffer_file.close()
+        stdin_buffer_file = open('stdin_buffer_file.tmp')
+        sp = subprocess.Popen(command_with_arguments.split(), stdin=stdin_buffer_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
+    else:
+        sp = subprocess.Popen(command_with_arguments.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
     starttime = time.clock()
 
     file_flags = fcntl.fcntl(sp.stdout.fileno(), fcntl.F_GETFL)
@@ -35,9 +44,15 @@ def run(command_with_arguments, input, timeout = 5.0):
     extraerrList = []
     stdoutList = []
     stderrList = []
+    linecount = 0
     try:
-        sp.stdin.write(input)
-        sp.stdin.close()
+        #for line in input.split('\n'):
+        #    print linecount,line
+        if (len(input) <= pipe_buffer_size):
+            sp.stdin.write(input)
+            sp.stdin.close()
+        #time.sleep(1)
+        #sp.stdin.flush()
 
         totalOutput = 0
 
@@ -59,11 +74,17 @@ def run(command_with_arguments, input, timeout = 5.0):
             if totalOutput >= 4096 * 1024:
                 extraerrList.append("Too much output data received, killing process!\n")
             if time.clock() - starttime >= timeout:
-                extraerrList.append("Maximum allowed time exceeded, killing process! Input was: [%s]\n"%(input))
+                extraerrList.append("Maximum allowed time exceeded, killing process! Input was: [%s]\n"%(input[0:min(len(input),500)]))
             os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             #sp.kill()
-    except:
-        extraerrList.append("Cannot write input to program, broken pipe!\n")
+    #except ValueError:
+        #pass
+        
+    except Exception, e:
+        print sys.exc_info()
+        extraerrList.append("Error:"+str(e))
+        print '\n'.join(extraerrList)
+        raise e
 
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))

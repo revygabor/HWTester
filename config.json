@@ -311,6 +311,29 @@
       }
     },
     "232": {
+      "name":"MIHF Recommendation System",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "MIHF/RecommendationSystem/RecommendationSystemTester",
+          "tester details": {
+            "evaluator":"MIHF/RecommendationSystem/RecommendationSystemEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/RecommendationSystem/tests.json",
+            "default timeout": 30.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "MIHF/RecommendationSystem/RecommendationSystemScoreCalculator",
+      "score calculator details": {
+        "score":15
+      }
+    },
+    "234": {
       "name":"MIHF Bayes",
       "firejail profile": "secure_firejail_profile",
       "projects": {
