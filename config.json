@@ -322,7 +322,7 @@
             "evaluator details": {
             },
             "tests": "MIHF/RecommendationSystem/tests.json",
-            "default timeout": 30.0,
+            "default timeout": 45.0,
             "break on first error": true,
             "break on first wrong": false
           }

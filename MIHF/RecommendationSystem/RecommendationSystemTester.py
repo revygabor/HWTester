@@ -21,11 +21,12 @@ class RecommendationSystemTester(Tester.Tester):
     def test(self, project_name, submission):
 
         tests = self.__tests
-
+        
         for data in tests:
             timeout = self.__default_timeout
 
             inputparams = data["input"]
+            print 'Testing for input', inputparams
             timeout = data.get("timeout") or self.__default_timeout
             
             pr = inputparams.split(',')
@@ -58,13 +59,14 @@ class RecommendationSystemTester(Tester.Tester):
             miss.flat[idx] = 0
 
             R_miss = R*miss
-            
-            input_for_students = "{}\t{}\t{}\n".format(int(I*J*missingness),I,J)
+            student_lines = 1
+            input_for_students = "{}\t{}\t{}\n".format(int(I*J*(1.0-missingness)),I,J)
             for i in range(I):
                 for j in range(J):
                     if miss[i,j]:
                         input_for_students += "{}\t{}\t{}\n".format(i,j,R[i,j])
-            
+                        student_lines += 1 
+            print 'Generated tester input, student_lines = ',student_lines
             (stdout, stderr, extraerr) = submission.run(project_name, input_for_students, timeout = timeout)
             
             
@@ -78,6 +80,7 @@ class RecommendationSystemTester(Tester.Tester):
             eval_inputs["J"] = J
             eval_inputs["rep_dim"] = rep_dim
             eval_inputs["miss"] = miss
+            eval_inputs["R"] = R
 
 
             if not (stderr or extraerr):
@@ -85,10 +88,10 @@ class RecommendationSystemTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,'\n'.join(input_for_students.split('\n',5)[0:-2])+'\n...')
+                    message = "Runtime error:\n%s\n\nfor untruncated input:\n%s" % (stderr,input_for_students)
                 else:
                     message = 'Other Error:' + extraerr
-
+            #result = details["score"] * result
             submission.log.log_test(project_name, eval_inputs, "", stdout, result, message)
 
             if self.__break_on_first_error and (stderr or extraerr):

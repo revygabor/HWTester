@@ -10,13 +10,18 @@ class RecommendationSystemScoreCalculator(ScoreCalculator.ScoreCalculator):
         self.__log = log
 
     def score(self):
-        ok_count = 0
+        test_count = 0
+        summed_score = 0
+        #print 'Scoring', self.__details["score"]
         for _, results in self.__log.data["results"].iteritems():
             for result in results:
-                ok_count += result["result"]
+                #print 'Scoring...',result["result"]
+                test_count += 1
+                summed_score += result["result"]
 
-        if ok_count >= 1:
-            return int(max(0, min(15.0,self.__details["score"])))
+        print 'Scored, test_count=',test_count,'summed_score = ',summed_score
+        if test_count > 0:
+            return int(max(0, min(15.0,15.0*(summed_score/float(test_count)))))
         else:
             return 0
 

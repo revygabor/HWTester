@@ -8,10 +8,12 @@ import time
 import signal
 import imp
 import sys,traceback
+def dir_clean_error(function,path,excinfo):
+    print 'WARNING: Ran into issues trying to remove directory:',path,str(function),str(excinfo)
 
 def clean_dir(target_dir):
     if os.path.exists(target_dir):
-        shutil.rmtree(target_dir)
+        shutil.rmtree(target_dir, ignore_errors=True,onerror= dir_clean_error)
 
 def unzip(data, target_dir, filename=None):
     submission_zipfile = ZipFile(StringIO(data))
@@ -30,7 +32,7 @@ def run(command_with_arguments, input, timeout = 5.0):
         stdin_buffer_file.write(input)
         stdin_buffer_file.close()
         stdin_buffer_file = open('stdin_buffer_file.tmp')
-        sp = subprocess.Popen(command_with_arguments.split(), stdin=stdin_buffer_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
+        sp = subprocess.Popen(command_with_arguments.split(), stdin=stdin_buffer_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid, universal_newlines = True)
     else:
         sp = subprocess.Popen(command_with_arguments.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
     starttime = time.clock()
@@ -61,20 +63,26 @@ def run(command_with_arguments, input, timeout = 5.0):
                 r = sp.stdout.read()
                 totalOutput = totalOutput + len(r)
                 stdoutList.append(r)
-            except:
+            except IOError:
+                pass
+            except Exception, e:
+                print 'stdout:',sys.exc_info()
                 pass
             try:
                 r = sp.stderr.read()
                 totalOutput = totalOutput + len(r)
                 stderrList.append(r)
-            except:
+            except IOError:
+                pass
+            except Exception, e:
+                print 'stderr:',sys.exc_info()
                 pass
 
         if sp.poll() is None:
             if totalOutput >= 4096 * 1024:
                 extraerrList.append("Too much output data received, killing process!\n")
             if time.clock() - starttime >= timeout:
-                extraerrList.append("Maximum allowed time exceeded, killing process! Input was: [%s]\n"%(input[0:min(len(input),500)]))
+                extraerrList.append("Maximum allowed time exceeded, killing process! Untruncated Input was: [%s]\n"%(input))
             os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             #sp.kill()
     #except ValueError:
@@ -83,9 +91,13 @@ def run(command_with_arguments, input, timeout = 5.0):
     except Exception, e:
         print sys.exc_info()
         extraerrList.append("Error:"+str(e))
-        print '\n'.join(extraerrList)
-        raise e
-
+        joined_extraerrors = '\n'.join(extraerrList)
+        print 'extraerrList:',joined_extraerrors[0:min(200,len(joined_extraerrors))]
+        #raise e
+    
+    joined_extraerrors = '\n'.join(extraerrList)
+    if len(stderrList)>0 or len(extraerrList)>0:
+        print "Finished running java command sdterr and extraerr:", "".join(stderrList), joined_extraerrors[0:min(200,len(joined_extraerrors))]
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))
 
