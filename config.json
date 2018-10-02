@@ -379,6 +379,29 @@
         "project_order":["Main"],
         "scores_per_test":1
       } 
+    },
+    "235": {
+      "name":"MIHF Maze",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "MIHF/Maze/MazeTester",
+          "tester details": {
+            "evaluator":"MIHF/Maze/MazeEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Maze/tests.json",
+            "default timeout": 60.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "MIHF/Maze/MazeScoreCalculator",
+      "score calculator details": {
+        "score":15
+      }
     }
   }
 }
