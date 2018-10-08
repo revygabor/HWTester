@@ -239,7 +239,7 @@ class Maze(object):
         self.generation_path = path
         
         
-        #tárgyak elhelyezése
+        #targyak elhelyezese
         i = 0
         while i < self.id:
             x = random.randint(0,self.num_rows-1)
@@ -248,8 +248,8 @@ class Maze(object):
                 self.grid[x][y].set_obj()
                 i += 1
         
-        #falak kitörése
-        i = int(self.num_cols*self.num_rows/100)*2 + 1 # 1% +1 fal kitörése
+        #falak kitorese
+        i = int(self.num_cols*self.num_rows/100)*2 + 1 # 1% +1 fal kitorese
         while i > 0:
             x = random.randint(1,self.num_rows-2)
             y = random.randint(1,self.num_cols-2)
@@ -271,14 +271,14 @@ class Maze(object):
             self.grid[i][j-1].remove_wall("right")
         
     def generate_maze_with_numbers(self):
-        """ kiirja egy listába az összes cellára az alábbiak összegét
-            csak a labirintus megoldása után hívható !
-            TODO ÁTÍRNI
+        """ kiirja egy listaba az osszes cellara az alabbiak osszeget
+            csak a labirintus megoldasa utan hivhato!
+            TODO ATIRNI
             fent: 1
             jobb: 2
             lent: 4
             bal : 8
-            tárgy: 16
+            targy: 16
         """
         maze_in_numbers = []
         counter = 0
@@ -313,13 +313,13 @@ class Maze(object):
 
         try:
             for line in solution:
-                if line == 'felvesz\n':
+                if 'felvesz' in line:
                     if curr_poz.have_obj == True:
                         curr_poz.get_obj()
                         gathered += 1
                     else:
                         isok = False
-                        message = 'Did not pick up object at move to'+str(line)
+                        message = 'Tried to pick up non-existing object at %d;%d '%(curr_poz.row, curr_poz.col)+str(line)
                         break
                 else:
                     x = int(line.split(" ")[0])
@@ -329,7 +329,7 @@ class Maze(object):
                             isok = False
                             message = 'Tried to move more than 1 space with '+ str(line)
                             break
-                        #ide eljut ha szabályos a lépés
+                        #ide eljut ha szabalyos a lepes
                         elif x == curr_poz.row -1 and y == curr_poz.col:      #fel
                             if curr_poz.walls["top"] == True:
                                 isok = False
@@ -375,7 +375,7 @@ class Maze(object):
                 message = 'Only gathered %d of %d items!'%(gathered,self.id)
                 isok = False
         except:
-            message = 'Failed to parse command at'+str(line)
+            message = 'Failed to parse command at: '+str(line)
             isok = False
             pass
         return (isok,message)

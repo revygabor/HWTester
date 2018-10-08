@@ -2,7 +2,7 @@ import Tester
 import json
 import time
 import numpy as np
-from maze_manager import MazeManager
+from MIHF.Maze.maze_manager import MazeManager
 
 class MazeTester(Tester.Tester):
 
@@ -37,20 +37,20 @@ class MazeTester(Tester.Tester):
             
             #Generate a maze
             currentMaze = mazeManager.add_maze(mazeX,mazeY,mazeObjects)
-            inputstr = mazeManage.print_maze_to_str(mazeObjects)
+            inputstr = mazeManager.print_maze_to_str(mazeObjects)
 
             (stdout, stderr, extraerr) = submission.run(project_name, inputstr, timeout = timeout)
 
             stdout = stdout.decode('utf-8','ignore').encode('ascii','replace').strip()
 
-            eval_inputs = {'mazemanager':mazeManage,'mazeID':mazeObjects}
+            eval_inputs = {'mazemanager':mazeManager,'mazeID':mazeObjects}
 
             if not (stderr or extraerr):
                 (result, message) = self.evaluator.evaluate(eval_inputs, None, stdout, submission.log)
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,input_first_row)
+                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,inputstr[0:min(1000,len(inputstr))])
                 else:
                     message = extraerr
 

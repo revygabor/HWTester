@@ -357,30 +357,6 @@
       }
     },
     "233": {
-      "name":"MIHF Search",
-      "firejail profile": "secure_firejail_profile",
-      "projects": {
-        "Main": {
-          "solution type": "JavaSolution",
-          "tester": "StdIOTester",
-          "tester details": {
-            "evaluator":"MIHF/Search/SearchEvaluator",
-            "evaluator details": {
-            },
-            "tests": "MIHF/Search/tests.json",
-            "default timeout": 3.0,
-            "break on first error": true,
-            "break on first wrong": false
-          }
-        }
-      },
-      "score calculator": "SimpleTestBasedScoreCalculator",
-      "score calculator details": {
-        "project_order":["Main"],
-        "scores_per_test":1
-      } 
-    },
-    "235": {
       "name":"MIHF Maze",
       "firejail profile": "secure_firejail_profile",
       "projects": {
@@ -400,7 +376,7 @@
       },
       "score calculator": "MIHF/Maze/MazeScoreCalculator",
       "score calculator details": {
-        "score":15
+        "score":12
       }
     }
   }
