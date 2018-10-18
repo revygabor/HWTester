@@ -20,7 +20,7 @@ class Maze(object):
         grid (list): A copy of initial_grid (possible this is un-needed)
         """
 
-    def __init__(self, num_rows, num_cols, id, randomseed = 1):
+    def __init__(self, num_rows, num_cols, num_objects, id, randomseed = 1):
         """Creates a gird of Cell objects that are neighbors to each other.
 
             Args:
@@ -31,6 +31,7 @@ class Maze(object):
         """
         self.num_cols = num_cols
         self.num_rows = num_rows
+        self.num_objects = num_objects
         self.id = id
         self.grid_size = num_rows*num_cols
         self.entry_coor = (0,0)
@@ -241,7 +242,7 @@ class Maze(object):
         
         #targyak elhelyezese
         i = 0
-        while i < self.id:
+        while i < self.num_objects:
             x = random.randint(0,self.num_rows-1)
             y = random.randint(0,self.num_cols-1)
             if(self.grid[x][y].have_obj == False):
@@ -308,7 +309,7 @@ class Maze(object):
     def check_solution(self, solution):
         curr_poz = self.grid[0][0]
         isok = True
-        message = 'Maze Correctly Solved'
+        message = 'Maze correctly solved, picked up all %d items'%(self.num_objects)
         gathered = 0
 
         try:
@@ -371,8 +372,8 @@ class Maze(object):
                         message = 'Moved out of bounds at move '+ str(line)
                         break
                     
-            if(gathered != self.id):
-                message = 'Only gathered %d of %d items!'%(gathered,self.id)
+            if(gathered != self.num_objects):
+                message = 'Only gathered %d of %d items!'%(gathered,self.num_objects)
                 isok = False
         except:
             message = 'Failed to parse command at: '+str(line)

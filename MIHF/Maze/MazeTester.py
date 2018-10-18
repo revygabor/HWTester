@@ -36,21 +36,24 @@ class MazeTester(Tester.Tester):
             mazeObjects = int(pr[2])
             
             #Generate a maze
-            currentMaze = mazeManager.add_maze(mazeX,mazeY,mazeObjects)
-            inputstr = mazeManager.print_maze_to_str(mazeObjects)
+            currentMaze = mazeManager.add_maze(mazeX,mazeY,mazeObjects,mazeindex+1)
+            inputstr = mazeManager.print_maze_to_str(mazeindex+1)
 
             (stdout, stderr, extraerr) = submission.run(project_name, inputstr, timeout = timeout)
 
             stdout = stdout.decode('utf-8','ignore').encode('ascii','replace').strip()
 
-            eval_inputs = {'mazemanager':mazeManager,'mazeID':mazeObjects}
+            eval_inputs = {'mazemanager':mazeManager,'mazeID':mazeindex+1}
 
             if not (stderr or extraerr):
                 (result, message) = self.evaluator.evaluate(eval_inputs, None, stdout, submission.log)
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,inputstr[0:min(1000,len(inputstr))])
+                    if len(message)> 10000:
+                        message = "Runtime error:\n%s\n\n for TRUNCATED [10000 chars] input:\n%s" % (stderr,inputstr[0:min(10000,len(inputstr))])
+                    else:
+                        message = "Runtime error:\n%s\n\nfor complete input:\n%s" % (stderr,inputstr[0:min(10000,len(inputstr))])
                 else:
                     message = extraerr
 

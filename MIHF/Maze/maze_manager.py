@@ -16,7 +16,7 @@ class MazeManager(object):
         self.media_name = ""
         self.quiet_mode = True
 
-    def add_maze(self, row, col, id):
+    def add_maze(self, row, col, objects, id):
         """Add a maze to the manager. We give the maze an index of
         the total number of mazes in the manager. As long as we don't
         add functionality to delete mazes from the manager, the ids will
@@ -28,7 +28,7 @@ class MazeManager(object):
             col (int): The width of the maze
             id (int):  The optional unique id of the maze.
         """
-        self.mazes.append(Maze(row, col, id))
+        self.mazes.append(Maze(row, col, objects, id))
         return self.mazes[-1]
 
     def get_maze(self, id):
@@ -105,7 +105,7 @@ class MazeManager(object):
             for j in range(len(maze_in_numbers[i])):
                 line.append(str(maze_in_numbers[i][j]))
             mazestr.append(' '.join(line)+'\n')
-        return ''.join(mazestr)+str(id)+'\n'
+        return ''.join(mazestr)+str(self.mazes[id-1].num_objects)+'\n'
         
     def gather_solution_from_console(self, id):
         solution = []
