@@ -50,12 +50,12 @@ class MazeTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    if len(message)> 10000:
+                    if len(inputstr)> 10000:
                         message = "Runtime error:\n%s\n\n for TRUNCATED [10000 chars] input:\n%s" % (stderr,inputstr[0:min(10000,len(inputstr))])
                     else:
                         message = "Runtime error:\n%s\n\nfor complete input:\n%s" % (stderr,inputstr[0:min(10000,len(inputstr))])
                 else:
-                    message = extraerr
+                    message = extraerr +'\nstdout was:' + stdout
 
             submission.log.log_test(project_name, eval_inputs, "", stdout, result, message)
 

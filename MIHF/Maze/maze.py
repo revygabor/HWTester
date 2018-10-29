@@ -313,7 +313,7 @@ class Maze(object):
         gathered = 0
 
         try:
-            for line in solution:
+            for lineindex, line in enumerate(solution):
                 if 'felvesz' in line:
                     if curr_poz.have_obj == True:
                         curr_poz.get_obj()
@@ -325,16 +325,22 @@ class Maze(object):
                 else:
                     x = int(line.split(" ")[0])
                     y = int(line.split(" ")[1])
-                    if x >= 0 and x <= self.num_rows and y >= 0 and y <= self.num_cols:
-                        if (abs(x - curr_poz.row) + abs(y - curr_poz.col))>1:
+                    if x >= 0 and x < self.num_rows and y >= 0 and y < self.num_cols:
+                        movedistance = (abs(x - curr_poz.row) + abs(y - curr_poz.col))
+                        if movedistance>1:
                             isok = False
-                            message = 'Tried to move more than 1 space with '+ str(line)
+                            message = 'Tried to move more than 1 space with move '+ str(line) + ' last known good position was: %d %d'%(curr_poz.row, curr_poz.col)
                             break
+                        elif movedistance == 0:
+                            isok = False
+                            message = 'Stood in place, dont do that. Move was:' + str(line)
+                            break
+
                         #ide eljut ha szabalyos a lepes
                         elif x == curr_poz.row -1 and y == curr_poz.col:      #fel
                             if curr_poz.walls["top"] == True:
                                 isok = False
-                                message = 'Collided with top wall at move '+ str(line)
+                                message = 'Collided with top wall at move: '+ str(line)
                                 break
                             else:
                                 curr_poz = self.grid[x][y]
@@ -342,7 +348,7 @@ class Maze(object):
                         elif x == curr_poz.row and y == curr_poz.col +1:    #jobbra
                             if curr_poz.walls["right"] == True:
                                 isok = False
-                                message = 'Collided with right wall at move '+ str(line)
+                                message = 'Collided with right wall at move: '+ str(line)
                                 break
                             else:
                                 curr_poz = self.grid[x][y]
@@ -350,7 +356,7 @@ class Maze(object):
                         elif x == curr_poz.row +1 and y == curr_poz.col:    #le
                             if curr_poz.walls["bottom"] == True:
                                 isok = False
-                                message = 'Collided with bottom wall at move '+ str(line)
+                                message = 'Collided with bottom wall at move: '+ str(line)
                                 break
                             else:
                                 curr_poz = self.grid[x][y]
@@ -358,23 +364,25 @@ class Maze(object):
                         elif x == curr_poz.row and y == curr_poz.col -1:    #balra
                             if curr_poz.walls["left"] == True:
                                 isok = False
-                                message = 'Collided with left wall at move '+ str(line)
+                                message = 'Collided with left wall at move: '+ str(line)
                                 break
                             else:
                                 curr_poz = self.grid[x][y]
                                 
                         else:
                             isok = False
-                            message = 'Unable to parse command at '+ str(line)
+                            message = 'Not a valid move at line: '+ str(line)
                             break
                     else:
                         isok = False
                         message = 'Moved out of bounds at move '+ str(line)
                         break
                     
-            if(gathered != self.num_objects):
+            if(gathered != self.num_objects) and isok:
                 message = 'Only gathered %d of %d items!'%(gathered,self.num_objects)
                 isok = False
+            if isok and (not (curr_poz.row == self.num_rows-1 and curr_poz.col == self.num_cols -1)):
+                print "This student did not solve the maze according to the rules! (didnt end in bottom right corner)"
         except:
             message = 'Failed to parse command at: '+str(line)
             isok = False
