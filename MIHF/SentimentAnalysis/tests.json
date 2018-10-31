@@ -1,0 +1,7 @@
+[
+  {
+    "input" : ["MIHF/SentimentAnalysis/twdata_train_samples.tsv", "MIHF/SentimentAnalysis/twdata_train_labels.tsv","MIHF/SentimentAnalysis/twdata_test_samples.tsv"],
+    "target": "MIHF/SentimentAnalysis/twdata_test_labels.tsv"
+    
+  }
+]
