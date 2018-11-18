@@ -246,7 +246,7 @@
         "scores":["1"]
       }
     },
-    "232": {
+    "9001": {
       "name":"MIHF Recommendation System",
       "firejail profile": "secure_firejail_profile",
       "projects": {
@@ -290,6 +290,29 @@
       "score calculator": "MIHF/Bayes/BayesMatrixFactorScoreCalculator",
       "score calculator details": {
         "score":15
+      }
+    },
+    "232": {
+      "name":"MIHF Regression",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaSolution",
+          "tester": "MIHF/Regression/RegressionTester",
+          "tester details": {
+            "evaluator":"MIHF/Regression/RegressionEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Regression/tests.json",
+            "default timeout": 120.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "MIHF/Regression/RegressionScoreCalculator",
+      "score calculator details": {
+        "score":12
       }
     },
     "233": {

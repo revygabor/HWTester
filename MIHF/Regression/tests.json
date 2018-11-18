@@ -1,0 +1,6 @@
+[
+  {
+    "input" : ["MIHF/Regression/mi3_train_features.tsv", "MIHF/Regression/mi3_train_values.tsv","MIHF/Regression/mi3_test_features.tsv"],
+    "target": "MIHF/Regression/mi3_test_values.tsv"
+  }
+]
