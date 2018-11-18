@@ -18,7 +18,9 @@ class SentimentAnalysisEvaluator(Evaluator.Evaluator):
                     correct+=1
             pctcorrect = float(correct)/float(total)
             #score = int(max(0.0,min(12.0,12.0*(pctcorrect-0.6))))
-            return (pctcorrect, 'Fraction of correct labels:%f'%pctcorrect)
+            message =  'Fraction of correct labels:%f'%pctcorrect
+            print message
+            return (pctcorrect,message)
         except ValueError as err:
             return (0, err.message)
         except Exception as e:

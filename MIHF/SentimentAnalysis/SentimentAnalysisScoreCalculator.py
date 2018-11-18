@@ -14,9 +14,12 @@ class SentimentAnalysisScoreCalculator(ScoreCalculator.ScoreCalculator):
         for _, results in self.__log.data["results"].iteritems():
             for result in results:
                 score += result["result"]
-
+        
         if score > 0.6:
-            return int(max(12.0,12.0*(score-0.6)))
+            points = int(min(12.0,12.0*(score-0.6)*10.0))
+            print 'Score:',score,'Points:',points
+            return points
+            
         else:
             return 0
 
