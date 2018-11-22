@@ -10,19 +10,16 @@ class RegressionScoreCalculator(ScoreCalculator.ScoreCalculator):
         self.__log = log
 
     def score(self):
-        score = 60.0
+        score = 0.0
         for _, results in self.__log.data["results"].iteritems():
             for result in results:
                 score += result["result"]
         
-        if score < 23.0:
-            points = int(max(0.0,min(12.0,12.0*(23.0-score)/6.0)))
-            print 'RegressionScoreCalculator score:',score,'Points:',points
-            return points
-            
-        else:
-            return 0
 
+        points = int(max(0.0,min(12.0,12.0*(23.0-score)/6.0)))
+        print 'RegressionScoreCalculator score:',score,'Points:',points
+        return points            
+    
     def message(self):
         message = []
         i = 0
