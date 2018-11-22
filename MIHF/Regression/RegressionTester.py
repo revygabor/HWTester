@@ -42,7 +42,7 @@ class RegressionTester(Tester.Tester):
         for row in roworder_train:
             inputs.append(mi3_train_values[row])
         
-        mi3_test_features = open(test["input"][0]).readlines()
+        mi3_test_features = open(test["input"][2]).readlines()
         for row in roworder_test:
             line = mi3_test_features[row].strip().split('\t')
             inputs.append('\t'.join([line[c] for c in columnorder])+'\n')
@@ -51,7 +51,6 @@ class RegressionTester(Tester.Tester):
         target_output = [mi3_test_values[r] for r in roworder_test]
         
         inputstr = ''.join(inputs)
-        target_output = open(test["target"]).readlines()
         
         print 'Time taken to shuffle inputs:',time.clock()-t0,' Input rows = %d, total len = %d target len = %d'%(len(inputs),len(inputstr),len(target_output))
         

@@ -15,8 +15,8 @@ class RegressionScoreCalculator(ScoreCalculator.ScoreCalculator):
             for result in results:
                 score += result["result"]
         
-        if score < 30.0:
-            points = int(max(0.0,min(12.0,12.0*(30.0-score)*0.1)))
+        if score < 23.0:
+            points = int(max(0.0,min(12.0,12.0*(23.0-score)/6.0)))
             print 'RegressionScoreCalculator score:',score,'Points:',points
             return points
             
