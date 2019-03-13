@@ -10,7 +10,7 @@ class RegressionEvaluator(Evaluator.Evaluator):
         try:
             output = output.split('\n')
             if len(output) != len(target_output):
-                return (0, 'Stdout did not contain the same number of lines as target output %d/%d'%(len(output),len(target_output)))
+                return (-1, 'Stdout did not contain the same number of lines as target output %d/%d'%(len(output),len(target_output)))
             total_error = 0.0
             for i in range(len(target_output)):
                 total_error += (float(output[i]) - float(target_output[i]))**2.0
@@ -22,8 +22,8 @@ class RegressionEvaluator(Evaluator.Evaluator):
             print message
             return (RMSE,message)
         except ValueError as err:
-            return (0, err.message)
+            return (-1, err.message)
         except Exception as e:
             print "Exception:", e.message
-            return (0, "Unknown error"+e.message)
+            return (-1, "Unknown error"+e.message)
 

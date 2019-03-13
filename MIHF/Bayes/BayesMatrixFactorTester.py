@@ -64,7 +64,7 @@ class BayesMatrixFactorTester(Tester.Tester):
                 if stderr:
                     message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr,input_first_row)
                 else:
-                    message = extraerr
+                    message = extraerr + '\n first 10000 chars of stdout was:' + stdout[0:min(10000,len(stdout))]
 
             submission.log.log_test(project_name, eval_inputs, "", stdout, result, message)
 

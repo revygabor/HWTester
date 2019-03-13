@@ -304,7 +304,7 @@
             "evaluator details": {
             },
             "tests": "MIHF/Regression/tests.json",
-            "default timeout": 120.0,
+            "default timeout": 200.0,
             "break on first error": true,
             "break on first wrong": true
           }

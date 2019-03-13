@@ -60,7 +60,7 @@ class RegressionTester(Tester.Tester):
         if not (stderr or extraerr):
             (result, message) = self.evaluator.evaluate(test, target_output, stdout, submission.log)
         else:
-            result = 0
+            result = -1
             if stderr:
                 if len(inputstr)> 10000:
                     message = "Runtime error:\n%s\n\n for TRUNCATED [10000 chars] input:\n%s" % (stderr,inputstr[0:min(10000,len(inputstr))])
