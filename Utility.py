@@ -24,17 +24,40 @@ def unzip(data, target_dir, filename=None):
         submission_zipfile.extract(filename,target_dir)
     else:
         submission_zipfile.extractall(target_dir)
+        
+def magic_quote_splitter(params):
+    # hftester -param "hehehe" -v "path  to file here":/usr/src/myapp -
+    out = []
+    
+    inquotes = False
+    for i,param in enumerate(params.split()):
 
-def run(command_with_arguments, input, timeout = 5.0):
+        if inquotes:
+            out[-1]+=' ' +str(param)
+        else:
+            out+=[str(param)]
+            
+        for c in param:
+            if c == '"' or c =='\'':
+                inquotes = not inquotes            
+        
+    print 'magic_quote_splitter: ',out
+    return out  
+        
+def run(command_with_arguments, input, timeout = 5.0, dockercleanup = False):
+    if dockercleanup:
+        cleanup_cmd = "docker rm -f hftester"
+        print "Running docker cleanup:",cleanup_cmd
+        os.system(cleanup_cmd)
     pipe_buffer_size = 4096
     if len(input) > pipe_buffer_size:
         stdin_buffer_file = open('stdin_buffer_file.tmp','w')
         stdin_buffer_file.write(input)
         stdin_buffer_file.close()
         stdin_buffer_file = open('stdin_buffer_file.tmp')
-        sp = subprocess.Popen(command_with_arguments.split(), stdin=stdin_buffer_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid, universal_newlines = True)
+        sp = subprocess.Popen(magic_quote_splitter(command_with_arguments), stdin=stdin_buffer_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid, universal_newlines = True)
     else:
-        sp = subprocess.Popen(command_with_arguments.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
+        sp = subprocess.Popen(magic_quote_splitter(command_with_arguments), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=pipe_buffer_size, preexec_fn=os.setsid)
     starttime = time.clock()
 
     file_flags = fcntl.fcntl(sp.stdout.fileno(), fcntl.F_GETFL)
@@ -97,7 +120,7 @@ def run(command_with_arguments, input, timeout = 5.0):
     
     joined_extraerrors = '\n'.join(extraerrList)
     if len(stderrList)>0 or len(extraerrList)>0:
-        print "Finished running java command sdterr and extraerr:", "".join(stderrList), joined_extraerrors[0:min(200,len(joined_extraerrors))]
+        print "Finished running command sdterr and extraerr:", "".join(stderrList), joined_extraerrors[0:min(200,len(joined_extraerrors))]
     #sp.communicate(input=input)
     return ("".join(stdoutList), "".join(stderrList), "".join(extraerrList))
 
@@ -108,7 +131,14 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
     params.extend(command_with_arguments.split())
     return run(" ".join(params), input=input, timeout=timeout)
 
-
+def run_python_docker(python_file_path, input, firejail_profile_file=None, timeout = 5.0):
+    pydir, sep, pyfilename = python_file_path.rpartition(os.sep)
+    cmd = 'timeout -s KILL %d docker run -i --rm --name hftester -v %s:/usr/src/myapp -w /usr/src/myapp python:3-alpine python %s'%(timeout,pydir, pyfilename)
+    print 'Running python docker command',cmd
+    #return None 
+    
+    return run(cmd, input=input,timeout = timeout,dockercleanup = True)
+   
 def get_class(classpath):
     if not classpath.endswith(".py"):
         classpath = classpath + ".py"

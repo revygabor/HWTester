@@ -14,12 +14,13 @@ class LineByLineEqualEvaluator(Evaluator.Evaluator):
             for i in range(len(target_output_lines)):
                 if len(output_lines) <= i:
                     if errmsg:
-                        return (float(i) / len(target_output_lines), errmsg)
-                    return (float(i) / len(target_output_lines), "Missing line %d in output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input))
+                        return (float(goodlines) / len(target_output_lines), errmsg)
+                    return (float(goodlines) / len(target_output_lines), "Missing line %d in output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input))
                 if output_lines[i].strip() != target_output_lines[i].strip() and not errmsg:
                     errmsg = "Wrong answer in line %d of output: \n%s\n\nfor input: \n%s\n" % (i+1, log.truncate(output), input)
                 if output_lines[i].strip() == target_output_lines[i].strip():
                     goodlines += 1
+                    #print 'goodlines +=1',output_lines[i],target_output_lines[i]
             return (float(goodlines) / len(target_output_lines), errmsg)
 
         return (1.0, "")

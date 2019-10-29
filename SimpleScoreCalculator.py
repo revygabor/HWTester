@@ -26,6 +26,8 @@ class SimpleScoreCalculator(ScoreCalculator.ScoreCalculator):
 
             for result in results:
                 res = result["result"]
+                #print res
+                #print result
                 fracscore += res
                 if res < 1.0:
                     all_good = False

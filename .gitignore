@@ -73,3 +73,16 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 MIHF/SentimentAnalysis/twdata_test_labels.tsv
+
+#misc stuff
+
+MIHF/Regression/mi3_test_features.tsv
+MIHF/Regression/mi3_test_values.tsv
+MIHF/Regression/mi3_train_features.tsv
+MIHF/Regression/mi3_train_values.tsv
+logfile
+memory_log.txt
+memwatch.sh
+old_log.txt
+oldhistory.txt
+

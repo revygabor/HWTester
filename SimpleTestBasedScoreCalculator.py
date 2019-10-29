@@ -14,12 +14,16 @@ class SimpleTestBasedScoreCalculator(ScoreCalculator.ScoreCalculator):
         for i in range(len(self.__details["project_order"])):
             project_name = self.__details["project_order"][i]
             results = self.__log.data["results"].get(project_name)
+            #print "results for test", results, project_name, score
             if not results:
                 continue
             for result in results:
+                print 'result=',result["result"]
                 res = result["result"]
                 totalscore += res * score
-
+        if 'max_score' in self.__details:
+            totalscore = min(self.__details['max_score'],totalscore)
+        print 'Total score = ', totalscore
         return totalscore
 
     def message(self):

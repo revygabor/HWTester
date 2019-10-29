@@ -114,13 +114,48 @@
       ],
       "max testcount": 12
     },
+    "373": {
+      "name":"OpreHF2Bprof",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"LineByLineEqualEvaluator",
+            "evaluator details": {},
+            "tests": "Opre/iodata_opre_hf2.json",
+            "default timeout": 3.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleScoreCalculator",
+      "score calculator details": {
+		 "project_order":["Main"],
+        "scores":["3"],
+        "min_required_total_scores":["0"],
+		"imsc_point_on_maxscore" : true
+      },
+      "scorelimits": [
+        [
+          0.5,
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "max testcount": 12
+    },
 	  
     "178": {
       "name":"Opre HF3",
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
           "tester": "StdIOTester",
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
@@ -184,7 +219,30 @@
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
+          "tester": "MIHF/SentimentAnalysis/SentimentAnalysisTester",
+          "tester details": {
+            "evaluator":"MIHF/SentimentAnalysis/SentimentAnalysisEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/SentimentAnalysis/tests.json",
+            "default timeout": 60.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "MIHF/SentimentAnalysis/SentimentAnalysisScoreCalculator",
+      "score calculator details": {
+        "score":12
+      }
+	},
+    "314": {
+      "name":"MIHF Sentiment Analysis",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
           "tester": "MIHF/SentimentAnalysis/SentimentAnalysisTester",
           "tester details": {
             "evaluator":"MIHF/SentimentAnalysis/SentimentAnalysisEvaluator",
@@ -382,7 +440,7 @@
         "score":12
       }
     },
-    "233": {
+    "233000000000": {
       "name":"MIHF Maze",
       "firejail profile": "secure_firejail_profile",
       "projects": {
@@ -404,6 +462,56 @@
       "score calculator details": {
         "score":12
       }
+    },
+	    "233": {
+      "name":"MIHF Search",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/Search/SearchEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Search/tests.json",
+            "default timeout": 30.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleTestBasedScoreCalculator",
+      "score calculator details": {
+        "project_order":["Main"],
+        "scores_per_test":1,
+        "max_score":12
+      } 
+    }, 
+	"313": {
+      "name":"MIHF Search EN",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
+          "tester": "StdIOTester",
+          "tester details": {
+            "evaluator":"MIHF/Search/SearchEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Search/tests.json",
+            "default timeout": 30.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleTestBasedScoreCalculator",
+      "score calculator details": {
+        "project_order":["Main"],
+        "scores_per_test":1,
+        "max_score":12
+      } 
     }
   }
 }
