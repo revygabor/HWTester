@@ -88,7 +88,7 @@ class RecommendationSystemTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    message = "Runtime error:\n%s\n\nfor untruncated input:\n%s" % (stderr,input_for_students)
+                    message = "Runtime error:\n%s\n\nfor truncated input:\n%s" % (stderr,input_for_students[:20])
                 else:
                     message = 'Other Error:' + extraerr
             #result = details["score"] * result

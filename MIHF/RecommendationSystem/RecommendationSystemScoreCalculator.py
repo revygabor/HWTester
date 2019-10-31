@@ -21,7 +21,7 @@ class RecommendationSystemScoreCalculator(ScoreCalculator.ScoreCalculator):
 
         print 'Scored, test_count=',test_count,'summed_score = ',summed_score
         if test_count > 0:
-            return int(max(0, min(15.0,15.0*(summed_score/float(test_count)))))
+            return int(max(0, min(self.__details["score"],self.__details["score"]*(summed_score/float(test_count)))))
         else:
             return 0
 
