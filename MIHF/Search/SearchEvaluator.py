@@ -20,11 +20,13 @@ class SearchEvaluator(Evaluator.Evaluator):
                 if len(o) == 2:
                     objects.append((int(o[0]),int(o[1])))   
             # read data
+           
+			
             M = np.genfromtxt(StringIO(unicode(output, "utf-8")),int,delimiter='\t')
             
             # check size
             if M.shape != dims:
-                return (0, "Size mismatch: should be ({0},{1}), found {2}, for input:\n\n {3}".format(dims[0],dims[1],M.shape,input))
+                return (0, "Size mismatch: should be ({0},{1}), found {2}, for input:\n\n {3} \nYour truncated output[:500] was: {4}".format(dims[0],dims[1],M.shape,input,output[:500]))
  
             # check objects
             for o in enumerate(objects):
@@ -49,5 +51,5 @@ class SearchEvaluator(Evaluator.Evaluator):
             return (0, "{0}\nfor input:\n\n {1}".format(err.message, input))
         except:
             print sys.exc_info()[0]
-            return (0, "Unknown error\nfor input:\n\n {1}".format(sys.exc_info()[0], input))
+            return (0, "Unknown error:\n {0} \nfor input:\n\n {1}".format(sys.exc_info()[0], input))
 

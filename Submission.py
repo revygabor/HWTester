@@ -28,7 +28,13 @@ class Submission(object):
         self.log = Log.Log(self.submission_details, self.hw_id, self.hw_details.get("name") or self.hw_id, self.MESSAGE_MAX_LENGTH)
 
         src_dir = os.path.join(self.EXTRACT_DIR, str(self.hw_id), self.submission_details["neptun"], str(self.submission_details["id"]))
+        src_dir = src_dir.decode('utf-8','ignore').encode('ascii','replace')
         #creates a directory like /media/50gb/src/[233 or OPRE HF1]/TEST03/7000/
+        # if not isinstance(src_dir,str):
+            # self.log.log_error("compile error","Error: Only ascii characters allowed in file paths! Bad file (shown in ascii:) %s"%(src_dir.decode('utf-8','ignore').encode('ascii','replace')))
+            # print "Attempted to create a path with non-ascii characters for neptun code",self.submission_details["neptun"],src_dir.decode('utf-8','ignore').encode('ascii','replace')
+            # return
+        #print "Attempting to create a path with non-ascii characters for neptun code",self.submission_details["neptun"],src_dir,'->',src_dir.decode('utf-8','ignore').encode('ascii','replace')
         Utility.clean_dir(src_dir)
         Utility.clean_dir(self.WORKING_DIR)
 

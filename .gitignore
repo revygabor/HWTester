@@ -86,3 +86,4 @@ memwatch.sh
 old_log.txt
 oldhistory.txt
 
+stdin_buffer_file.tmp

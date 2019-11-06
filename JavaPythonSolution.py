@@ -92,5 +92,5 @@ class JavaPythonSolution(Solution.Solution):
         if self.javaOrPython == 'java':
             return self.__run_firejail_java(classname, input, timeout)        
         else:
-            return Utility.run_python_docker(classname,input,timeout)
+            return Utility.run_python_docker(classname,input, firejail_profile_file=None, timeout = timeout)
     

@@ -494,7 +494,7 @@
       "projects": {
         "Main": {
           "solution type": "JavaPythonSolution",
-          "tester": "StdIOTester",
+          "tester": "MIHF/Search/SearchTester",
           "tester details": {
             "evaluator":"MIHF/Search/SearchEvaluator",
             "evaluator details": {

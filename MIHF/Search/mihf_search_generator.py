@@ -4,7 +4,7 @@ import random
 import json
 #usage: python mihf_search_generator.py [startsize] [endsize] [stepsize]"
 #psarkozy@mit.bme.hu
-random.seed(1)
+
 
 
 class Piece:
@@ -58,16 +58,18 @@ def createInput(x, y, desired_splits):
         raise ValueError('Sanity check failed, sum of pieces not equal to total area!'+str(pieces))
     return '%d\t%d\n%d\n%s\n' % (x, y, len(pieces), '\n'.join(['%d\t%d' % (piece.x, piece.y) for piece in pieces]))
 
-startSize = 3
-endSize = 31
-stepSize = 3
-if len(sys.argv) >= 4:
-    startSize, endSize, stepSize = map(int, tuple(sys.argv[1:4]))
-json_output = []
+if __name__ == "__main__":
+	random.seed(1)
+	startSize = 3
+	endSize = 31
+	stepSize = 3
+	if len(sys.argv) >= 4:
+		startSize, endSize, stepSize = map(int, tuple(sys.argv[1:4]))
+	json_output = []
 
-for i in range(startSize, endSize, stepSize):
-    inputstring = createInput(i, i, i*2)
-    #print inputstring
-    json_output.append({"input": inputstring, "target": ""})
+	for i in range(startSize, endSize, stepSize):
+		inputstring = createInput(i, i, i*2)
+		#print inputstring
+		json_output.append({"input": inputstring, "target": ""})
 
-print json.dumps(json_output, separators=(',\n', ': '))
+	print json.dumps(json_output, separators=(',\n', ': '))
