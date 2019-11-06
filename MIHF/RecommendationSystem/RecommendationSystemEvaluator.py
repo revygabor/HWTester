@@ -37,6 +37,12 @@ class RecommendationSystemEvaluator(Evaluator.Evaluator):
 
             #raise err
             return (0, err.message)
+        except IndexError as err:
+            print err.message
+            print (err)
+            traceback.print_exc()
+            return (0,'The dimensions of the user output was %s, make sure these match the specifications!\n %s' %(res.shape,err.message))
         except:
-            return (0, "Unknown error")
+            raise 
+            return (0, "Unknown error: for user output of %s "%(unicode(output)))
 
