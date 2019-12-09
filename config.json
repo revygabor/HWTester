@@ -226,7 +226,7 @@
             "evaluator details": {
             },
             "tests": "MIHF/RecommendationSystem/tests.json",
-            "default timeout": 45.0,
+            "default timeout": 120.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -249,7 +249,7 @@
             "evaluator details": {
             },
             "tests": "MIHF/RecommendationSystem/tests.json",
-            "default timeout": 45.0,
+            "default timeout": 120.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -422,7 +422,7 @@
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
           "tester": "MIHF/Regression/RegressionTester",
           "tester details": {
             "evaluator":"MIHF/Regression/RegressionEvaluator",
@@ -440,6 +440,31 @@
         "score":12
       }
     },
+
+    "315": {
+      "name":"MIHF Regression",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
+          "tester": "MIHF/Regression/RegressionTester",
+          "tester details": {
+            "evaluator":"MIHF/Regression/RegressionEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/Regression/tests.json",
+            "default timeout": 200.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "MIHF/Regression/RegressionScoreCalculator",
+      "score calculator details": {
+        "score":12
+      }
+    },
+
     "233000000000": {
       "name":"MIHF Maze",
       "firejail profile": "secure_firejail_profile",
