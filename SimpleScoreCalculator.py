@@ -59,7 +59,7 @@ class SimpleScoreCalculator(ScoreCalculator.ScoreCalculator):
                 if msg:
                     message = message + msg + "\n\n"
                     allgood = False
-                    break
+                    #break
             if allgood:
                 message = message + "OK.\n\n"
 

@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 import time
 from connection_hfportal import get_submissions
 import Submission
@@ -33,5 +34,5 @@ if __name__ == "__main__":
                 sub = Submission.Submission(submission_details, hw_id, hw_details, config)
                 sub.evaluate()
 
-        print "Sleeping", time.clock()
+        print "Sleeping", datetime.now()
         time.sleep(10)

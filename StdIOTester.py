@@ -48,12 +48,13 @@ class StdIOTester(Tester.Tester):
                 (result, message) = self.evaluator.evaluate(input, target_output, stdout, submission.log)
             else:
                 result = 0
+                message = ''
                 if stderr:
                     
                     #name = school_name.encode('utf8')
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr.encode('utf8'),input.encode('utf8'))
-                else:
-                    message = extraerr
+                    message += "Runtime error:\n%s\n\nfor input:\n%s" % (stderr.encode('utf8'),input.encode('utf8'))
+                if extraerr:
+                    message += extraerr
 
             submission.log.log_test(project_name, input, target_output, stdout, result, message)
 

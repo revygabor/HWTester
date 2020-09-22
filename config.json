@@ -14,13 +14,13 @@
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
           "tester": "StdIOTester",
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
             "evaluator details": {},
-            "tests": "Opre/iodata_opre_hf1b.json",
-            "default timeout": 3.0,
+            "tests": "Opre/iodata_opre_hf1_2020.json",
+            "default timeout": 5.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -49,13 +49,13 @@
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
           "tester": "StdIOTester",
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
             "evaluator details": {},
-            "tests": "Opre/iodata_opre_hf1b.json",
-            "default timeout": 3.0,
+            "tests": "Opre/iodata_opre_hf1_2020.json",
+            "default timeout": 5.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -66,7 +66,7 @@
 		 "project_order":["Main"],
         "scores":["3"],
         "min_required_total_scores":["0"],
-		"imsc_point_on_maxscore" : false
+		"imsc_point_on_maxscore" : true
       },
       "scorelimits": [
         [
@@ -84,13 +84,13 @@
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
-          "solution type": "JavaSolution",
+          "solution type": "JavaPythonSolution",
           "tester": "StdIOTester",
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
             "evaluator details": {},
-            "tests": "Opre/iodata_opre_hf2.json",
-            "default timeout": 3.0,
+            "tests": "Opre/iodata_opre_hf2_2020.json",
+            "default timeout": 5.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -112,7 +112,7 @@
           1.0
         ]
       ],
-      "max testcount": 12
+      "max testcount": 15
     },
     "373": {
       "name":"OpreHF2Bprof",
@@ -124,8 +124,8 @@
           "tester details": {
             "evaluator":"LineByLineEqualEvaluator",
             "evaluator details": {},
-            "tests": "Opre/iodata_opre_hf2.json",
-            "default timeout": 3.0,
+            "tests": "Opre/iodata_opre_hf2_2020.json",
+            "default timeout": 5.0,
             "break on first error": true,
             "break on first wrong": false
           }
@@ -147,7 +147,7 @@
           1.0
         ]
       ],
-      "max testcount": 12
+      "max testcount": 15
     },
 	  
     "178": {

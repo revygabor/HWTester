@@ -10,12 +10,13 @@ def get_host():
 def get_submissions(hw_id, state = 0):    
     try:
         if state:
-            response = urlopen('https://%s/api.php?get_submission_list=%d&status=%d' % (get_host(), int(hw_id), int(state)))
-        else:	
-            response = urlopen('https://%s/api.php?get_submission_list=%d' % (get_host(), int(hw_id)))
+            response = urlopen('https://%s/api.php?get_submission_list=%d&status=%d' % (get_host(), int(hw_id), int(state)), timeout =10)
+        else:
+            response = urlopen('https://%s/api.php?get_submission_list=%d' % (get_host(), int(hw_id)), timeout = 10)
         data = response.read()    
         return json.loads(data)
     except Exception as e:
+        print ("Error fetching URL: %r"%e)
         return []
 
 def get_submission_file(id):    
