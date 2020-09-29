@@ -43,7 +43,7 @@
         ]
       ],
       "max testcount": 100
-    },  
+    }, 
     "372": {
       "name":"BProf OpRe HF1",
       "firejail profile": "secure_firejail_profile",
@@ -489,17 +489,17 @@
       }
     },
 	    "233": {
-      "name":"MIHF Search",
+      "name":"MIHF Warehouse",
       "firejail profile": "secure_firejail_profile",
       "projects": {
         "Main": {
           "solution type": "JavaPythonSolution",
           "tester": "StdIOTester",
           "tester details": {
-            "evaluator":"MIHF/Search/SearchEvaluator",
+            "evaluator":"MIHF/Warehouse/SearchEvaluator",
             "evaluator details": {
             },
-            "tests": "MIHF/Search/tests.json",
+            "tests": "MIHF/Warehouse/tests.json",
             "default timeout": 30.0,
             "break on first error": true,
             "break on first wrong": false
