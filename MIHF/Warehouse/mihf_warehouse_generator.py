@@ -97,7 +97,7 @@ def createInput(width, height, desired_splits, desired_pillars):
     for pillar in pillars:
         if pillar[0] < 1 or pillar[0] >= total_width or pillar[1] < 1 or pillar[1] >= total_height:
             raise ValueError('Sanity check failed, a pillar is not on the inside of the warehouse!'+str(pillar) + 'with map ' + str((total_width,total_height)))
-    combined = [(pillar[0], pillar[1]) for pillar in pillars] + [(piece.width, piece.height) for piece in pieces]
+    combined = [(pillar[1], pillar[0]) for pillar in pillars] + [(piece.width, piece.height) for piece in pieces]
     return '%d\t%d\n%d\n%d\n%s\n' % (width, height,len(pillars), len(pieces), '\n'.join(['%d\t%d' % (piece[0], piece[1]) for piece in combined]))
 
 
