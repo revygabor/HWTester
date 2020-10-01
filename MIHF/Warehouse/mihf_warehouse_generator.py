@@ -110,9 +110,14 @@ if __name__ == "__main__":
     json_output = []
     
     
-    for i in range(startSize, startSize + stepSize*12 +1, stepSize):
+    for i in range(startSize, startSize + stepSize*7 + 1, stepSize):
         inputstring = createInput(i, i, i*2,i)
         #print inputstring
         json_output.append({"input": inputstring, "target": ""})
-
+    
+    # reduce scaling rate at the end
+    for i in range(27,34,2):
+        json_output.append({"input": createInput(i, i, i*2,i), "target": ""})
+    
+    
     print json.dumps(json_output, separators=(',\n', ': '))
