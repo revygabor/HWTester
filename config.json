@@ -537,6 +537,31 @@
         "scores_per_test":1,
         "max_score":12
       } 
+    },
+    "81523": {
+      "name":"MIHF BayesianNetwork",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "Main": {
+          "solution type": "JavaPythonSolution",
+          "tester": "MIHF/BayesianNetwork/BayesianNetworkTester",
+          "tester details": {
+            "evaluator":"MIHF/BayesianNetwork/BayesianNetworkEvaluator",
+            "evaluator details": {
+            },
+            "tests": "MIHF/BayesianNetwork/tests.json",
+            "default timeout": 30.0,
+            "break on first error": true,
+            "break on first wrong": false
+          }
+        }
+      },
+      "score calculator": "SimpleTestBasedScoreCalculator",
+      "score calculator details": {
+        "project_order":["Main"],
+        "scores_per_test":2,
+        "max_score":12
+      }
     }
   }
 }
