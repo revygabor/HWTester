@@ -37,12 +37,11 @@ class BayesianNetworkTester(Tester.Tester):
             else:
                 result = 0
                 if stderr:
-                    # name = school_name.encode('utf8')
-                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr.encode('utf8'), input.encode('utf8'))
+                    message = "Runtime error:\n%s\n\nfor input:\n%s" % (stderr.encode('utf8'), input_str.encode('utf8'))
                 else:
                     message = extraerr
 
-            submission.log.log_test(project_name, input, target_output, stdout, result, message)
+            submission.log.log_test(project_name, input_str, target_output, stdout, result, message)
 
             if self.__break_on_first_error and (stderr or extraerr):
                 break
