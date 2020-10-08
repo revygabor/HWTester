@@ -3,7 +3,7 @@ import json
 import time
 import random
 import importlib
-from test_generator import generate_task
+from MIHF.BayesianNetwork.test_generator import generate_task
 
 import sys
 reload(sys)
