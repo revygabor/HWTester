@@ -214,7 +214,7 @@
       ],
       "max testcount": 100
     },
-    "231": {
+    "81523": {
       "name":"MIHF Recommendation System",
       "firejail profile": "secure_firejail_profile",
       "projects": {
@@ -538,7 +538,7 @@
         "max_score":12
       } 
     },
-    "81523": {
+    "231": {
       "name":"MIHF BayesianNetwork",
       "firejail profile": "secure_firejail_profile",
       "projects": {
