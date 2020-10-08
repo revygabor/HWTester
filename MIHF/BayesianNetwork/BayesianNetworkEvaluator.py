@@ -21,8 +21,8 @@ class BayesianNetworkEvaluator(Evaluator.Evaluator):
                 ))
             for target, output in zip(target_output_values, output_values):
                 if abs(target - output) > 0.0001:
-                    return (0, "One or more probabilities exceeded the 0.0001 error treshold for input:\n\n{0}"
-                               "\n\ntarget output:\n\n{1}\n\nactual output:\n\n{2}".format(
+                    return (0, "One or more probabilities exceeded the 0.0001 error treshold for "
+                               "target output:\n\n{1}\n\nactual output:\n\n{2}\n\ninput:\n\n{0}".format(
                         input_str, target_output, output
                     ))
             return (1, "")
