@@ -26,9 +26,21 @@ class BayesianNetworkTester(Tester.Tester):
     def test(self, project_name, submission):
         for params in self.__test_parameters:
             timeout = self.__default_timeout
-            input_str, target_output = generate_task(params)
 
-            (stdout, stderr, extraerr) = submission.run(project_name, input_str, timeout = timeout)
+            try:
+                input_str, target_output = generate_task(params)
+            except:
+                input_str = ""
+                target_output = ""
+                print >> sys.stderr, "Unexpected error: " + str(sys.exc_info()[0])
+
+            if input_str:
+                (stdout, stderr, extraerr) = submission.run(project_name, input_str, timeout = timeout)
+            else:
+                stdout = ""
+                stderr = ""
+                extraerr = "Internal error. If this issue persists," \
+                           "please contact the lecturer, or the homework support team."
 
             stdout = stdout.decode('utf-8', 'ignore').encode('ascii', 'replace').strip()
 

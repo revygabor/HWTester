@@ -55,7 +55,13 @@ def generate_task(params):
     number_of_symptoms = try_get_param(params, "number_of_symptoms") or 3
     target_index = try_get_param(params, "target_index") or gen_node_count + 3
 
-    assert gen_node_count >= unknown_gen_variables
+    if not (sensitivity_is_known or (unknown_gen_variables <= 10)):
+        raise AttributeError("The sensitivity must be known if there are more than 10 unknown gen variables.")
+
+    if gen_node_count < unknown_gen_variables:
+        raise AttributeError("The number of unknown gen variables can't be greater "
+                             "than the total number of gen variables.")
+
     number_of_gen_evidences = gen_node_count - unknown_gen_variables
 
     edges = [(0, 2), (1, 2)]
