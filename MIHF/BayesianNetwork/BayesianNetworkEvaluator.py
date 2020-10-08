@@ -10,6 +10,9 @@ class BayesianNetworkEvaluator(Evaluator.Evaluator):
 
     def evaluate(self, input_str, target_output, output, log):
         try:
+            if not output:
+                raise ValueError("Received empty output. This could be caused by the execution "
+                                 "exceeding the given time limit.")
             target_output_values = [float(value) for value in target_output.strip().split('\n')]
             output_values = [float(value) for value in output.strip().split('\n')]
             if len(target_output_values) != len(output_values):
