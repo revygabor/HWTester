@@ -16,13 +16,14 @@ class BayesianNetworkEvaluator(Evaluator.Evaluator):
             target_output_values = [float(value) for value in target_output.strip().split('\n')]
             output_values = [float(value) for value in output.strip().split('\n')]
             if len(target_output_values) != len(output_values):
-                return (0, "Expected {0} probability values but received {1} for input:\n\n{2}".format(
-                    str(len(target_output_values)), str(len(output_values)), input_str
+                return (0, "Expected {0} probability values but received {1}.\n\noutput:\n\n{2}\n\nexpected output:\n\n"
+                           "{3}\n\nfirst 10k chars of input:\n\n{4}".format(
+                    str(len(target_output_values)), str(len(output_values)), output, target_output, input_str
                 ))
             for target, current_output in zip(target_output_values, output_values):
                 if abs(target - current_output) > 0.0001:
                     return (0, "One or more probabilities exceeded the 0.0001 error treshold for "
-                               "target output:\n\n{1}\n\nactual output:\n\n{2}\n\ninput:\n\n{0}".format(
+                               "target output:\n\n{1}\n\nactual output:\n\n{2}\n\nfirst 10k chars of input:\n\n{0}".format(
                         input_str, target_output, output
                     ))
             return (1, "")
