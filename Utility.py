@@ -107,8 +107,8 @@ def run(command_with_arguments, input, timeout = 5.0, dockercleanup = False):
             if time.clock() - starttime >= timeout - 0.5 :
                 print "Process killed because of timeout"
                 extraerrList.append("Maximum allowed time exceeded, killing process! First 10000 chars of input was: [%s]\n"%(input[0:min(10000,len(input))]))
+            os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             os.system("sudo docker stop hftester")
-            #os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             #sp.kill()
     #except ValueError:
         #pass
