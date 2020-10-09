@@ -107,7 +107,8 @@ def run(command_with_arguments, input, timeout = 5.0, dockercleanup = False):
             if time.clock() - starttime >= timeout - 0.5 :
                 print "Process killed because of timeout"
                 extraerrList.append("Maximum allowed time exceeded, killing process! First 10000 chars of input was: [%s]\n"%(input[0:min(10000,len(input))]))
-            os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
+            os.system("sudo docker stop hftester")
+            #os.killpg(os.getpgid(sp.pid), signal.SIGTERM)
             #sp.kill()
     #except ValueError:
         #pass
@@ -134,7 +135,7 @@ def run_firejail(command_with_arguments, input, firejail_profile_file=None, time
 
 def run_python_docker(python_file_path, input, firejail_profile_file=None, timeout = 5.0):
     pydir, sep, pyfilename = python_file_path.rpartition(os.sep)
-    cmd = 'timeout -s KILL %d docker run -i --rm --name hftester -v %s:/usr/src/myapp -w /usr/src/myapp python:3-alpine python %s'%(timeout,pydir, pyfilename)
+    cmd = 'docker run -i --rm -m 400M --memory-swap -1 --ulimit cpu=%d --name hftester -v %s:/usr/src/myapp -w /usr/src/myapp python:3-alpine python %s'%(timeout, pydir, pyfilename)
     print 'Running python docker command',cmd
     #return None 
     
