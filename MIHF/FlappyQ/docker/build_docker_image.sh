@@ -1,0 +1,1 @@
+sudo docker build -t "python:3-alpine-numpy" .

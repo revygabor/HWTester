@@ -417,7 +417,7 @@
         "score":15
       }
     },
-    "232": {
+    "2329999": {
       "name":"MIHF Regression",
       "firejail profile": "secure_firejail_profile",
       "projects": {
@@ -460,6 +460,30 @@
         }
       },
       "score calculator": "MIHF/Regression/RegressionScoreCalculator",
+      "score calculator details": {
+        "score":12
+      }
+    },
+
+    "232": {
+      "name":"MIHF FlappyQ",
+      "firejail profile": "secure_firejail_profile",
+      "projects": {
+        "FlappyEvaluator": {
+          "solution type": "MIHF/FlappyQ/FlappyQJavaPythonSolution",
+          "tester": "MIHF/FlappyQ/FlappyQTester",
+          "tester details": {
+            "evaluator":"MIHF/FlappyQ/FlappyQEvaluator",
+            "evaluator details": {
+            },
+            "tests": "",
+            "default timeout": 35.0,
+            "break on first error": true,
+            "break on first wrong": true
+          }
+        }
+      },
+      "score calculator": "MIHF/FlappyQ/FlappyQScoreCalculator",
       "score calculator details": {
         "score":12
       }
